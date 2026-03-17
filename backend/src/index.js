@@ -15,7 +15,6 @@ const playlists_js_1 = __importDefault(require("./routes/playlists.js"));
 const recommendations_js_1 = __importDefault(require("./routes/recommendations.js"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
-app.set('trust proxy', 1);
 const PORT = Number(process.env.PORT) || 3001;
 // Middleware
 app.use((0, cors_1.default)({
