@@ -1,92 +1,9 @@
-<!doctype html>
-<html lang="pl">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>05 - Frontend rdzen</title>
-  <link rel="stylesheet" href="../style.css" />
-</head>
-<body>
-  <div class="page">
-    <header class="header">
-      <h1>05. Frontend rdzen i komunikacja</h1>
-      <p class="muted">To jest serce frontendu: start appki, routing, sesja i API client.</p>
-      <div class="breadcrumb"><a href="../WAVEE_PROJECT_BW_DOKUMENTACJA_TECHNICZNA.html">Powrot do strony glownej</a></div>
-    </header>
-
-    <section class="card">
-      <h2>1) frontend/src/main.tsx</h2>
-      <p>
-        Tu rusza React i konfiguracja cache query. QueryClient trzyma dane z API i ogranicza liczbe
-        zapytan do backendu.
-      </p>
-      <pre><code>export const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 1000 * 60 * 5,
-      retry: 1,
-    },
-  },
+<!doctype html><html lang="pl"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>05 - Frontend rdzen</title><link rel="stylesheet" href="../style.css"/></head><body><div class="page"><header class="header"><h1>05. Frontend rdzen i komunikacja</h1><p class="muted">Opis plikow odpowiedzialnych za uruchomienie frontendu i komunikacje z API.</p><div class="breadcrumb"><a href="../WAVEE_PROJECT_BW_DOKUMENTACJA_TECHNICZNA.html">Powrot do strony glownej</a></div></header><section class="card"><h2>frontend/src/main.tsx</h2><p>Plik inicjuje aplikacje oraz QueryClientProvider.</p><pre><code>export const queryClient = new QueryClient({
+  defaultOptions: { queries: { staleTime: 1000 * 60 * 5, retry: 1 } }
 })
-</code></pre>
-    </section>
-
-    <section class="card">
-      <h2>2) frontend/src/App.tsx</h2>
-      <p>
-        Tu jest mapa wszystkich tras. Czesci prywatne sa opakowane przez ProtectedRoute.
-      </p>
-      <ul>
-        <li>Publiczne: Home, Login</li>
-        <li>Chronione: Dashboard, Search, Track, Reviews, Generator, Community, Profile</li>
-      </ul>
-    </section>
-
-    <section class="card">
-      <h2>3) frontend/src/contexts/AuthContext.tsx</h2>
-      <p>
-        Context daje globalny stan zalogowania i usera. Przy starcie probuje pobrac <code>/auth/me</code>.
-      </p>
-      <pre><code>const { data } = await getCurrentUser()
-setUser(data)
-</code></pre>
-      <p>
-        Przy logout czyści cache query przez <code>queryClient.clear()</code>, wiec nie ma starych danych po sesji.
-      </p>
-    </section>
-
-    <section class="card">
-      <h2>4) frontend/src/lib/api.ts</h2>
-      <p>
-        To jeden wspolny klient HTTP. Najwazniejszy jest interceptor 401, ktory sam probuje odswiezyc sesje.
-      </p>
-      <pre><code>if (!originalRequest || status !== 401 || originalRequest._retry || shouldSkipRefresh) {
-  return Promise.reject(error)
+</code></pre></section><section class="card"><h2>frontend/src/App.tsx</h2><p>Plik definiuje routing i warstwe chronionych tras przez ProtectedRoute.</p></section><section class="card"><h2>frontend/src/contexts/AuthContext.tsx</h2><p>Context utrzymuje stan sesji i profil zalogowanego uzytkownika.</p></section><section class="card"><h2>frontend/src/lib/api.ts</h2><p>Wspolny klient HTTP (axios) z interceptor 401 i mechanizmem odswiezenia tokenu.</p><pre><code>if (status === 401 && !originalRequest._retry) {
+  originalRequest._retry = true
+  await api.post('/auth/refresh')
+  return api(originalRequest)
 }
-originalRequest._retry = true
-await api.post('/auth/refresh')
-return api(originalRequest)
-</code></pre>
-
-      <h3>Dlaczego to jest dobre</h3>
-      <ul>
-        <li>Nie trzeba recznie obslugiwac refresh w kazdej stronie.</li>
-        <li>User rzadziej widzi logowanie od nowa.</li>
-        <li>Logika API jest skupiona w jednym miejscu.</li>
-      </ul>
-    </section>
-
-    <section class="card">
-      <h2>5) Layout i ProtectedRoute</h2>
-      <ul>
-        <li><code>Layout.tsx</code> daje wspolna nawigacje i stopke.</li>
-        <li><code>ProtectedRoute.tsx</code> blokuje wejscie bez sesji.</li>
-      </ul>
-    </section>
-
-    <footer class="footer">
-      <p>Nastepna podstrona: <a href="06_frontend_strony_ui.html">06. Frontend strony i UI</a></p>
-    </footer>
-  </div>
-</body>
-</html>
+</code></pre></section><footer class="footer"><p>Nastepna podstrona: <a href="06_frontend_strony_ui.html">06. Frontend strony i komponenty</a></p></footer></div></body></html>

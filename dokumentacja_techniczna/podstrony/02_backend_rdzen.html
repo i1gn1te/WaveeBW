@@ -1,91 +1,11 @@
-<!doctype html>
-<html lang="pl">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>02 - Backend rdzen</title>
-  <link rel="stylesheet" href="../style.css" />
-</head>
-<body>
-  <div class="page">
-    <header class="header">
-      <h1>02. Backend rdzen i middleware</h1>
-      <p class="muted">Tutaj jest analiza glownego startu serwera oraz auth middleware.</p>
-      <div class="breadcrumb"><a href="../WAVEE_PROJECT_BW_DOKUMENTACJA_TECHNICZNA.html">Powrot do strony glownej</a></div>
-    </header>
-
-    <section class="card">
-      <h2>Plik: backend/src/index.js</h2>
-      <p>To jest centralny punkt backendu. On robi 6 krytycznych rzeczy:</p>
-      <ol>
-        <li>Laduje konfiguracje ze zmiennych srodowiskowych.</li>
-        <li>Uruchamia CORS i whitelist originow.</li>
-        <li>Uruchamia parser JSON i obsluge cookie.</li>
-        <li>Podpina route auth, user, reviews, spotify, playlists, recommendations.</li>
-        <li>Daje endpoint zdrowia <code>/api/health</code>.</li>
-        <li>Uruchamia globalny handler bledow.</li>
-      </ol>
-
-      <pre><code>app.use('/api/auth', authRoutes)
+<!doctype html><html lang="pl"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>02 - Backend rdzen</title><link rel="stylesheet" href="../style.css"/></head><body><div class="page"><header class="header"><h1>02. Backend rdzen i middleware</h1><p class="muted">Analiza plikow odpowiedzialnych za start serwera i kontrole sesji.</p><div class="breadcrumb"><a href="../WAVEE_PROJECT_BW_DOKUMENTACJA_TECHNICZNA.html">Powrot do strony glownej</a></div></header><section class="card"><h2>backend/src/index.js</h2><p>Plik konfiguruje serwer Express i rejestruje route API.</p><pre><code>app.use('/api/auth', authRoutes)
 app.use('/api/user', userRoutes)
 app.use('/api/reviews', reviewsRoutes)
 app.use('/api/spotify', spotifyRoutes)
 app.use('/api/playlists', playlistsRoutes)
 app.use('/api/recommendations', recommendationsRoutes)
-</code></pre>
-    </section>
-
-    <section class="card">
-      <h2>Plik: backend/src/middleware/auth.js</h2>
-      <p>Ten middleware pilnuje, zeby request mial wazna sesje. Najpierw bierze token, potem go sprawdza.</p>
-      <pre><code>const token = req.cookies.token || req.headers.authorization?.split(' ')[1]
-if (!token) return res.status(401).json({ error: 'Authentication required' })
-
+</code></pre><p>Plik zawiera rowniez endpoint health check oraz middleware globalnej obslugi bledow.</p></section><section class="card"><h2>backend/src/middleware/auth.js</h2><p>Middleware realizuje walidacje tokenu JWT i odswiezanie sesji.</p><pre><code>const token = req.cookies.token || req.headers.authorization?.split(' ')[1]
 const decoded = jwt.verify(token, process.env.JWT_SECRET)
 req.userId = decoded.userId
 req.spotifyAccessToken = decoded.spotifyAccessToken
-</code></pre>
-
-      <h3>Co sie dzieje gdy JWT wygasnie</h3>
-      <ul>
-        <li>Middleware probuje odczytac token mimo expiracji.</li>
-        <li>Jesli ma refresh token Spotify, robi odswiezenie access tokena.</li>
-        <li>Wystawia nowe cookie JWT i request idzie dalej bez wyrzucania usera.</li>
-      </ul>
-    </section>
-
-    <section class="card">
-      <h2>Plik: backend/src/lib/prisma.js</h2>
-      <p>
-        Singleton Prisma. Dzieki temu przy hot-reload nie tworzy sie duzo klientow DB i nie ma
-        glupich problemow z polaczeniami.
-      </p>
-      <pre><code>const globalForPrisma = globalThis
-export const prisma = globalForPrisma.prisma ?? new PrismaClient()
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
-</code></pre>
-    </section>
-
-    <section class="card">
-      <h2>Plik: backend/src/lib/spotify.js (rdzen integracji)</h2>
-      <p>To jest najwiekszy plik logiczny backendu. Odpowiada za:</p>
-      <ul>
-        <li>zbudowanie URL logowania Spotify,</li>
-        <li>wymiane code na tokeny,</li>
-        <li>refresh tokena,</li>
-        <li>search i track details,</li>
-        <li>audio features z fallbackiem na <code>null</code>,</li>
-        <li>rekomendacje z nowa strategia (bez starych deprecated endpointow).</li>
-      </ul>
-      <p>
-        Najwazniejsze: projekt juz jest przygotowany na zmiany Spotify po 2024, wiec nie opiera sie na
-        wycofanym endpoint <code>/recommendations</code> w starej formie.
-      </p>
-    </section>
-
-    <footer class="footer">
-      <p>Nastepna podstrona: <a href="03_backend_route_api.html">03. Backend route i API</a></p>
-    </footer>
-  </div>
-</body>
-</html>
+</code></pre><p>Po wykryciu wygasniecia tokenu wykonywany jest proces refresh token przez Spotify.</p></section><section class="card"><h2>backend/src/lib/prisma.js i backend/src/lib/spotify.js</h2><ul><li>prisma.js: singleton PrismaClient.</li><li>spotify.js: OAuth, wyszukiwanie, top tracks, audio features, playlist sync.</li></ul></section><footer class="footer"><p>Nastepna podstrona: <a href="03_backend_route_api.html">03. Backend route i API</a></p></footer></div></body></html>

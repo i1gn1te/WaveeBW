@@ -1,94 +1,16 @@
-<!doctype html>
-<html lang="pl">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>07 - Uruchomienie i bezpieczenstwo</title>
-  <link rel="stylesheet" href="../style.css" />
-</head>
-<body>
-  <div class="page">
-    <header class="header">
-      <h1>07. Uruchomienie, bezpieczenstwo i testy</h1>
-      <p class="muted">Finalna sekcja: jak odpalic projekt, jak go testowac i na co uwazac.</p>
-      <div class="breadcrumb"><a href="../WAVEE_PROJECT_BW_DOKUMENTACJA_TECHNICZNA.html">Powrot do strony glownej</a></div>
-    </header>
-
-    <section class="card">
-      <h2>1) Uruchomienie lokalne</h2>
-      <h3>Backend</h3>
-      <pre><code>cd backend
+<!doctype html><html lang="pl"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>07 - Uruchomienie</title><link rel="stylesheet" href="../style.css"/></head><body><div class="page"><header class="header"><h1>07. Uruchomienie i analiza techniczna</h1><p class="muted">Sekcja zawiera konfiguracje startowa oraz opis mechanizmow stabilnosci dzialania.</p><div class="breadcrumb"><a href="../WAVEE_PROJECT_BW_DOKUMENTACJA_TECHNICZNA.html">Powrot do strony glownej</a></div></header><section class="card"><h2>Uruchomienie backend</h2><pre><code>cd backend
 npm install
 npm run db:generate
 npm run db:push
 npm run dev
-</code></pre>
-
-      <h3>Frontend</h3>
-      <pre><code>cd frontend
+</code></pre></section><section class="card"><h2>Uruchomienie frontend</h2><pre><code>cd frontend
 npm install
 npm run dev
-</code></pre>
-
-      <h3>Zmienne .env (backend)</h3>
-      <pre><code>PORT=3001
+</code></pre></section><section class="card"><h2>Konfiguracja backend .env</h2><pre><code>PORT=3001
 CLIENT_URL=http://localhost:5173
 DATABASE_URL=postgresql://USER:PASS@localhost:5432/waveeProjectBW
-JWT_SECRET=twoj_super_sekret
+JWT_SECRET=sekret
 SPOTIFY_CLIENT_ID=...
 SPOTIFY_CLIENT_SECRET=...
 SPOTIFY_REDIRECT_URI=http://localhost:3001/api/auth/callback
-</code></pre>
-    </section>
-
-    <section class="card">
-      <h2>2) Checklista testow recznych</h2>
-      <ol>
-        <li>Login demo i wejscie do dashboard.</li>
-        <li>Wyszukanie tracka i wejscie do szczegolow.</li>
-        <li>Dodanie recenzji 4.5 i sprawdzenie listy recenzji.</li>
-        <li>Generator playlisty po gatunku i po tracku.</li>
-        <li>Usuniecie recenzji i weryfikacja odswiezenia danych.</li>
-        <li>Wylogowanie i proba wejscia na strone chroniona.</li>
-      </ol>
-    </section>
-
-    <section class="card">
-      <h2>3) Bezpieczenstwo - co jest i co warto dopchnac</h2>
-      <h3>Juz jest dobrze</h3>
-      <ul>
-        <li>JWT i middleware auth.</li>
-        <li>Walidacja danych przez Zod.</li>
-        <li>Kontrola wlasciciela zasobu (playlista/recenzja).</li>
-        <li>Obsluga bledow Spotify z czytelnym komunikatem.</li>
-      </ul>
-
-      <h3>Warto dorobic w kolejnym kroku</h3>
-      <ul>
-        <li>Rate limiting na endpointy logowania i search.</li>
-        <li><code>secure: true</code> dla cookie na produkcji.</li>
-        <li>Testy automatyczne backend route.</li>
-        <li>Monitoring i centralny logger.</li>
-      </ul>
-    </section>
-
-    <section class="card">
-      <h2>4) Co powiedziec przy obronie projektu</h2>
-      <ol>
-        <li>Pokazac tryb demo jako zabezpieczenie prezentacji.</li>
-        <li>Pokazac upsert recenzji i unikalnosc danych.</li>
-        <li>Pokazac interceptor 401 i auto-refresh sesji.</li>
-        <li>Pokazac jak frontend i backend dzialaja oddzielnie ale spojnie.</li>
-      </ol>
-      <p>
-        Taki flow zwykle robi bardzo dobre wrazenie, bo pokazuje nie tylko UI ale tez ogarnieta logike.
-      </p>
-    </section>
-
-    <footer class="footer">
-      <p>Podpis autorow dokumentacji: Aleksander Baran, Franciszek WawrzeÅ„</p>
-      <p>Koniec wersji wielostronicowej HTML.</p>
-    </footer>
-  </div>
-</body>
-</html>
+</code></pre></section><section class="card"><h2>Mechanizmy dzialania</h2><ul><li>Walidacja danych wejsciowych przez Zod.</li><li>Autoryzacja przez JWT i middleware auth.</li><li>Obsluga sesji z odswiezaniem tokenu.</li><li>Tryb demo oparty o mockData przy braku tokenow Spotify.</li></ul></section><footer class="footer"><p>Podpis autorow dokumentacji: Aleksander Baran, Franciszek Wawrzeñ</p></footer></div></body></html>

@@ -3,17 +3,17 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>waveeProjectBW - Dokumentacja Techniczna (Start)</title>
+  <title>waveeProjectBW - Dokumentacja Techniczna</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="page">
     <header class="header">
-      <span class="badge">MEGA DOKLADNA WERSJA</span>
-      <h1>waveeProjectBW - Dokumentacja Techniczna</h1>
+      <span class="badge">DOKUMENTACJA TECHNICZNA</span>
+      <h1>waveeProjectBW - dokumentacja techniczna</h1>
       <p class="muted">
-        To jest strona glowna dokumentacji. Dalej masz podstrony, gdzie kazdy wazny obszar projektu jest
-        rozpisany bardzo szczegolowo i prostym jezykiem.
+        Strona glowna zawiera podzial na sekcje tematyczne. Kazda podstrona opisuje dzialanie
+        najwazniejszych plikow i mechanizmow aplikacji.
       </p>
 
       <nav class="nav">
@@ -22,98 +22,40 @@
         <a href="podstrony/03_backend_route_api.html">03. Backend route i API</a>
         <a href="podstrony/04_baza_danych_prisma.html">04. Baza danych i Prisma</a>
         <a href="podstrony/05_frontend_rdzen.html">05. Frontend rdzen i komunikacja</a>
-        <a href="podstrony/06_frontend_strony_ui.html">06. Frontend strony i UI</a>
-        <a href="podstrony/07_uruchomienie_bezpieczenstwo_testy.html">07. Uruchomienie, bezpieczenstwo, testy</a>
+        <a href="podstrony/06_frontend_strony_ui.html">06. Frontend strony i komponenty</a>
+        <a href="podstrony/07_uruchomienie_bezpieczenstwo_testy.html">07. Uruchomienie i analiza techniczna</a>
       </nav>
     </header>
 
     <section class="card">
-      <h2>Dlaczego tekst teraz bedzie widoczny</h2>
+      <h2>Charakter dokumentu</h2>
       <ul>
-        <li>Ustawiony jest jasny background i ciemny kolor tekstu globalnie.</li>
-        <li>Kazda karta ma biale tlo i osobny kontrast (tekst nie zniknie na gradientach).</li>
-        <li>Kolory kodu w <code>pre</code> sa stale i nie zaleza od przypadkowego stylu przegladarki.</li>
-        <li>Dziala tez tryb drukowania, wiec mozna wygodnie generowac PDF.</li>
+        <li>Jezzyk bezosobowy, forma raportowa.</li>
+        <li>Opis dzialania funkcji i modulow programu.</li>
+        <li>Brak list zadan do wykonania.</li>
+        <li>Zawarte skrawki kodu dla kluczowych elementow.</li>
       </ul>
     </section>
 
     <section class="card">
-      <h2>Jak czytac ta dokumentacje</h2>
-      <ol>
-        <li>Najpierw odpal strone 01 i 02, bo tam jest fundament dzialania programu.</li>
-        <li>Potem przejdz 03 i 04, bo tam sa endpointy i baza danych.</li>
-        <li>Nastepnie 05 i 06, bo tam frontend i wszystkie ekrany.</li>
-        <li>Na koncu 07, bo tam deployment, bezpieczeÅ„stwo i plan testow.</li>
-      </ol>
-      <p class="muted">
-        W calosci dokumentacji znajdziesz duzo praktycznych skrawkow kodu i opisy "co, po co, kiedy".
-      </p>
-    </section>
-
-    <section class="card">
-      <h2>Spis kluczowych plikow, ktore sa analizowane</h2>
+      <h2>Zakres opisu</h2>
       <div class="table-wrap">
         <table>
           <thead>
-            <tr>
-              <th>Warstwa</th>
-              <th>Plik</th>
-              <th>Co robi</th>
-            </tr>
+            <tr><th>Obszar</th><th>Zakres</th></tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Backend</td>
-              <td><code>backend/src/index.js</code></td>
-              <td>Start serwera, middleware, podpiecie route, health check</td>
-            </tr>
-            <tr>
-              <td>Backend</td>
-              <td><code>backend/src/middleware/auth.js</code></td>
-              <td>Weryfikacja JWT i odswiezanie tokenow Spotify</td>
-            </tr>
-            <tr>
-              <td>Backend</td>
-              <td><code>backend/src/lib/spotify.js</code></td>
-              <td>Integracja z Spotify API i helpery rekomendacji</td>
-            </tr>
-            <tr>
-              <td>Backend</td>
-              <td><code>backend/src/routes/*.js</code></td>
-              <td>Auth, user, reviews, spotify, playlists, recommendations</td>
-            </tr>
-            <tr>
-              <td>Baza</td>
-              <td><code>backend/prisma/schema.prisma</code></td>
-              <td>Modele danych i relacje miedzy tabelami</td>
-            </tr>
-            <tr>
-              <td>Frontend</td>
-              <td><code>frontend/src/main.tsx</code></td>
-              <td>Punkt startowy React + QueryClient</td>
-            </tr>
-            <tr>
-              <td>Frontend</td>
-              <td><code>frontend/src/App.tsx</code></td>
-              <td>Routing i ochrona tras</td>
-            </tr>
-            <tr>
-              <td>Frontend</td>
-              <td><code>frontend/src/lib/api.ts</code></td>
-              <td>HTTP client, interceptor 401, refresh sesji</td>
-            </tr>
-            <tr>
-              <td>Frontend</td>
-              <td><code>frontend/src/pages/*.tsx</code></td>
-              <td>Logika ekranow i interakcje usera</td>
-            </tr>
+            <tr><td>Backend</td><td>Start serwera, middleware auth, logika route, integracja Spotify</td></tr>
+            <tr><td>Baza danych</td><td>Modele Prisma, relacje, klucze unikalne, spojnosæ danych</td></tr>
+            <tr><td>Frontend</td><td>Routing, stan sesji, API client, logika ekranow</td></tr>
+            <tr><td>Uruchomienie</td><td>Konfiguracja .env i skrypty startowe</td></tr>
           </tbody>
         </table>
       </div>
     </section>
 
     <footer class="footer">
-      <p><strong>Podpis autorow dokumentacji:</strong> Aleksander Baran, Franciszek WawrzeÅ„</p>
+      <p><strong>Podpis autorow dokumentacji:</strong> Aleksander Baran, Franciszek Wawrzeñ</p>
       <p>Data: 17.03.2026</p>
     </footer>
   </div>
