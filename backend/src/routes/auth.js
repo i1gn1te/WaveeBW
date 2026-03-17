@@ -27,12 +27,6 @@ function requireJwtSecret() {
         throw new Error('JWT_SECRET not set');
     return secret;
 }
-function getClientUrl() {
-    return (process.env.CLIENT_URL || 'http://localhost:5173').replace(/\/+$/, '');
-}
-function getSpotifyRedirectUriForWeb() {
-    return `${getClientUrl()}/api/auth/callback`;
-}
 // ---------------------------------------------------------------------------
 // GET /login — return Spotify auth URL (or demoMode flag)
 // ---------------------------------------------------------------------------
@@ -45,7 +39,7 @@ router.get('/login', (_req, res) => {
         });
     }
     try {
-        const url = (0, spotify_js_1.getAuthUrl)(undefined, getSpotifyRedirectUriForWeb());
+        const url = (0, spotify_js_1.getAuthUrl)();
         res.json({ url, demoMode: false });
     }
     catch (error) {
@@ -56,21 +50,18 @@ router.get('/login', (_req, res) => {
 // ---------------------------------------------------------------------------
 // POST /demo-login — create demo session (always available)
 // ---------------------------------------------------------------------------
-router.post('/demo-login', async (req, res) => {
+router.post('/demo-login', async (_req, res) => {
     try {
         const secret = requireJwtSecret();
         res.clearCookie('token');
-        const requestedName = typeof req.body?.displayName === 'string'
-            ? req.body.displayName.trim().slice(0, 32)
-            : '';
-        const demoId = `demo_${Date.now()}_${Math.floor(Math.random() * 1000000)}`;
-        const displayName = requestedName || `Demo User ${Math.floor(1000 + Math.random() * 9000)}`;
-        const user = await prisma_js_1.prisma.user.create({
-            data: {
-                spotifyId: demoId,
-                email: `${demoId}@wavee.app`,
-                displayName,
-                avatarUrl: `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(demoId)}`,
+        const user = await prisma_js_1.prisma.user.upsert({
+            where: { spotifyId: 'demo_user' },
+            update: {},
+            create: {
+                spotifyId: 'demo_user',
+                email: 'demo@wavee.app',
+                displayName: 'Demo User',
+                avatarUrl: 'https://api.dicebear.com/7.x/avataaars/svg?seed=wavee',
                 country: 'PL',
                 favoriteGenres: ['pop', 'rock', 'electronic'],
             },
@@ -89,14 +80,14 @@ router.post('/demo-login', async (req, res) => {
 // ---------------------------------------------------------------------------
 router.get('/callback', async (req, res) => {
     const { code, error } = req.query;
-    const clientUrl = getClientUrl();
+    const clientUrl = process.env.CLIENT_URL || 'http://localhost:5173';
     if (error)
         return res.redirect(`${clientUrl}/login?error=${error}`);
     if (!code || typeof code !== 'string')
         return res.redirect(`${clientUrl}/login?error=no_code`);
     try {
         const secret = requireJwtSecret();
-        const tokens = await (0, spotify_js_1.getTokens)(code, getSpotifyRedirectUriForWeb());
+        const tokens = await (0, spotify_js_1.getTokens)(code);
         const profile = await (0, spotify_js_1.getUserProfile)(tokens.access_token);
         const user = await prisma_js_1.prisma.user.upsert({
             where: { spotifyId: profile.id },

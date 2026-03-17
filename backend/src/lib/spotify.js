@@ -85,15 +85,14 @@ function isStatus(err, status) {
 // ---------------------------------------------------------------------------
 // Auth
 // ---------------------------------------------------------------------------
-function getAuthUrl(state, redirectUriOverride) {
+function getAuthUrl(state) {
     const clientId = process.env.SPOTIFY_CLIENT_ID;
     if (!clientId)
         throw new Error('SPOTIFY_CLIENT_ID not set');
-    const redirectUri = redirectUriOverride || getRedirectUri();
     const params = new URLSearchParams({
         client_id: clientId,
         response_type: 'code',
-        redirect_uri: redirectUri,
+        redirect_uri: getRedirectUri(),
         scope: SCOPES,
         show_dialog: 'true',
     });
@@ -101,12 +100,11 @@ function getAuthUrl(state, redirectUriOverride) {
         params.set('state', state);
     return `${ACCOUNTS}/authorize?${params}`;
 }
-async function getTokens(code, redirectUriOverride) {
-    const redirectUri = redirectUriOverride || getRedirectUri();
+async function getTokens(code) {
     const { data } = await axios_1.default.post(`${ACCOUNTS}/api/token`, new URLSearchParams({
         grant_type: 'authorization_code',
         code,
-        redirect_uri: redirectUri,
+        redirect_uri: getRedirectUri(),
     }).toString(), {
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',

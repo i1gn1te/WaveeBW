@@ -114,10 +114,7 @@ router.get('/search', auth_js_1.authMiddleware, async (req, res) => {
         const users = await prisma_js_1.prisma.user.findMany({
             where: {
                 id: { not: req.userId },
-                NOT: [
-                    { spotifyId: 'demo_user' },
-                    { spotifyId: { startsWith: 'demo_' } },
-                ],
+                spotifyId: { not: 'demo_user' },
                 OR: [
                     { displayName: { contains: q, mode: 'insensitive' } },
                     { email: { contains: q, mode: 'insensitive' } },
