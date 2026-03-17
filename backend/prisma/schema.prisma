@@ -1,0 +1,128 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  spotifyId     String    @unique
+  email         String?   @unique
+  displayName   String?
+  avatarUrl     String?
+  country       String?
+  bio           String?
+  
+  // Music preferences
+  favoriteGenres String[]
+  
+  // Relations
+  reviews       Review[]
+  playlists     Playlist[]
+  likedTracks   LikedTrack[]
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Review {
+  id          String   @id @default(cuid())
+  
+  // Track info (stored for quick access)
+  trackId     String   // Spotify track ID
+  trackName   String
+  artistName  String
+  albumName   String
+  albumArt    String?
+  
+  // Review content
+  rating      Float    // 0.5 to 5.0 stars (like Letterboxd)
+  content     String?  // Text review (optional)
+  
+  // Audio features at time of review
+  tempo       Float?
+  key         Int?
+  energy      Float?
+  danceability Float?
+  valence     Float?   // Musical positivity
+  
+  // Relations
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Likes on review
+  likesCount  Int      @default(0)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@unique([userId, trackId])
+  @@index([trackId])
+  @@index([rating])
+}
+
+model Playlist {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  
+  // Can be synced to Spotify
+  spotifyPlaylistId String?
+  
+  // Playlist tracks
+  tracks      PlaylistTrack[]
+  
+  // Owner
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  isPublic    Boolean  @default(true)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model PlaylistTrack {
+  id          String   @id @default(cuid())
+  
+  trackId     String   // Spotify track ID
+  trackName   String
+  artistName  String
+  albumArt    String?
+  
+  position    Int
+  
+  playlistId  String
+  playlist    Playlist @relation(fields: [playlistId], references: [id], onDelete: Cascade)
+  
+  addedAt     DateTime @default(now())
+  
+  @@unique([playlistId, trackId])
+}
+
+model LikedTrack {
+  id          String   @id @default(cuid())
+  
+  trackId     String   // Spotify track ID
+  trackName   String
+  artistName  String
+  albumArt    String?
+  
+  // Audio features
+  tempo       Float?
+  key         Int?
+  energy      Float?
+  danceability Float?
+  valence     Float?
+  genres      String[]
+  
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  likedAt     DateTime @default(now())
+  
+  @@unique([userId, trackId])
+}
