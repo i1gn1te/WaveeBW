@@ -13,10 +13,12 @@ const router = (0, express_1.Router)();
 const SPOTIFY_CONFIGURED = !!process.env.SPOTIFY_CLIENT_ID &&
     process.env.SPOTIFY_CLIENT_ID !== 'your_spotify_client_id';
 // Shared cookie options
+const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 const COOKIE_OPTS = {
     httpOnly: true,
-    secure: false,
-    sameSite: 'lax',
+    secure: IS_PRODUCTION,
+    sameSite: IS_PRODUCTION ? 'none' : 'lax',
+    path: '/',
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
 };
 function requireJwtSecret() {
@@ -167,7 +169,12 @@ router.post('/refresh', async (req, res) => {
 // POST /logout
 // ---------------------------------------------------------------------------
 router.post('/logout', (_req, res) => {
-    res.clearCookie('token');
+    res.clearCookie('token', {
+        httpOnly: true,
+        secure: IS_PRODUCTION,
+        sameSite: IS_PRODUCTION ? 'none' : 'lax',
+        path: '/',
+    });
     res.json({ success: true });
 });
 exports.default = router;
