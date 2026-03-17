@@ -24,7 +24,7 @@ export default function Layout() {
               <div className="w-8 h-8 bg-gradient-to-br from-primary-400 to-primary-600 rounded-lg flex items-center justify-center">
                 <Music className="w-5 h-5 text-white" />
               </div>
-              <span className="text-xl font-bold text-white">Wavee</span>
+              <span className="text-xl font-bold text-white">waveeProjectBW</span>
             </Link>
 
             {/* Desktop Navigation */}
@@ -130,7 +130,7 @@ export default function Layout() {
       {/* Footer */}
       <footer className="border-t border-gray-800 py-8 mt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-500 text-sm">
-          <p>Wavee - Twój personalny przewodnik muzyczny 🎵</p>
+          <p>waveeProjectBW - Twój personalny przewodnik muzyczny 🎵</p>
           <p className="mt-2">Powered by Spotify Web API</p>
         </div>
       </footer>

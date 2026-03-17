@@ -1,13 +1,7 @@
 import axios from 'axios'
 
-// W produkcji (Vercel) używamy pełnego URL backendu z Railway.
-// Lokalnie proxy w vite.config.ts przekierowuje /api → localhost:3001.
-const baseURL = import.meta.env.VITE_API_URL
-  ? `${import.meta.env.VITE_API_URL}/api`
-  : '/api'
-
 const api = axios.create({
-  baseURL,
+  baseURL: '/api',
   withCredentials: true,
 })
 

@@ -5,6 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const crypto_1 = __importDefault(require("crypto"));
+const zod_1 = require("zod");
 const prisma_js_1 = require("../lib/prisma.js");
 const spotify_js_1 = require("../lib/spotify.js");
 const auth_js_1 = require("../middleware/auth.js");
@@ -25,6 +27,101 @@ function requireJwtSecret() {
         throw new Error('JWT_SECRET not set');
     return secret;
 }
+function hashPassword(password) {
+    const salt = crypto_1.default.randomBytes(16).toString('hex');
+    const hash = crypto_1.default.scryptSync(password, salt, 64).toString('hex');
+    return `${salt}:${hash}`;
+}
+function verifyPassword(password, storedHash) {
+    const [salt, key] = storedHash.split(':');
+    if (!salt || !key)
+        return false;
+    const hashToVerify = crypto_1.default.scryptSync(password, salt, 64).toString('hex');
+    return crypto_1.default.timingSafeEqual(Buffer.from(hashToVerify, 'hex'), Buffer.from(key, 'hex'));
+}
+const localAuthSchema = zod_1.z.object({
+    email: zod_1.z.string().email('Nieprawidłowy email').max(120),
+    password: zod_1.z.string().min(6, 'Hasło musi mieć minimum 6 znaków').max(72),
+    displayName: zod_1.z.string().min(2, 'Nazwa użytkownika jest za krótka').max(40).optional(),
+});
+// ---------------------------------------------------------------------------
+// POST /register — local email/password registration
+// ---------------------------------------------------------------------------
+router.post('/register', async (req, res) => {
+    try {
+        const parsed = localAuthSchema.safeParse(req.body);
+        if (!parsed.success) {
+            return res.status(400).json({ error: parsed.error.issues[0]?.message || 'Nieprawidłowe dane' });
+        }
+        const { email, password, displayName } = parsed.data;
+        const normalizedEmail = email.toLowerCase().trim();
+        const existing = await prisma_js_1.prisma.user.findUnique({
+            where: { email: normalizedEmail },
+            select: { id: true },
+        });
+        if (existing) {
+            return res.status(409).json({ error: 'Konto z tym emailem już istnieje' });
+        }
+        const user = await prisma_js_1.prisma.user.create({
+            data: {
+                spotifyId: `local_${crypto_1.default.randomUUID()}`,
+                email: normalizedEmail,
+                displayName: displayName?.trim() || normalizedEmail.split('@')[0],
+                passwordHash: hashPassword(password),
+                favoriteGenres: [],
+            },
+        });
+        const secret = requireJwtSecret();
+        const token = jsonwebtoken_1.default.sign({
+            userId: user.id,
+            spotifyAccessToken: 'demo_token',
+            spotifyRefreshToken: 'demo_refresh',
+        }, secret, { expiresIn: '7d' });
+        res.cookie('token', token, COOKIE_OPTS);
+        return res.status(201).json({ success: true, user: { id: user.id, email: user.email, displayName: user.displayName } });
+    }
+    catch (error) {
+        console.error('Local register error:', error);
+        return res.status(500).json({ error: 'Rejestracja nie powiodła się' });
+    }
+});
+// ---------------------------------------------------------------------------
+// POST /local-login — local email/password login
+// ---------------------------------------------------------------------------
+router.post('/local-login', async (req, res) => {
+    try {
+        const parsed = localAuthSchema.omit({ displayName: true }).safeParse(req.body);
+        if (!parsed.success) {
+            return res.status(400).json({ error: parsed.error.issues[0]?.message || 'Nieprawidłowe dane logowania' });
+        }
+        const { email, password } = parsed.data;
+        const normalizedEmail = email.toLowerCase().trim();
+        const user = await prisma_js_1.prisma.user.findUnique({
+            where: { email: normalizedEmail },
+            select: {
+                id: true,
+                email: true,
+                displayName: true,
+                passwordHash: true,
+            },
+        });
+        if (!user?.passwordHash || !verifyPassword(password, user.passwordHash)) {
+            return res.status(401).json({ error: 'Nieprawidłowy login lub hasło' });
+        }
+        const secret = requireJwtSecret();
+        const token = jsonwebtoken_1.default.sign({
+            userId: user.id,
+            spotifyAccessToken: 'demo_token',
+            spotifyRefreshToken: 'demo_refresh',
+        }, secret, { expiresIn: '7d' });
+        res.cookie('token', token, COOKIE_OPTS);
+        return res.json({ success: true, user: { id: user.id, email: user.email, displayName: user.displayName } });
+    }
+    catch (error) {
+        console.error('Local login error:', error);
+        return res.status(500).json({ error: 'Logowanie nie powiodło się' });
+    }
+});
 // ---------------------------------------------------------------------------
 // GET /login — return Spotify auth URL (or demoMode flag)
 // ---------------------------------------------------------------------------
@@ -57,9 +154,9 @@ router.post('/demo-login', async (_req, res) => {
             update: {},
             create: {
                 spotifyId: 'demo_user',
-                email: 'demo@wavee.app',
+                email: 'demo@waveeProjectBW.app',
                 displayName: 'Demo User',
-                avatarUrl: 'https://api.dicebear.com/7.x/avataaars/svg?seed=wavee',
+                avatarUrl: 'https://api.dicebear.com/7.x/avataaars/svg?seed=waveeProjectBW',
                 country: 'PL',
                 favoriteGenres: ['pop', 'rock', 'electronic'],
             },

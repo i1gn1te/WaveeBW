@@ -1,4 +1,4 @@
-# 🌊 Wavee
+# 🌊 waveeProjectBW
 
 **Your Music Review & Playlist Platform**
 

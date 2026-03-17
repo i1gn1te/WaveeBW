@@ -51,7 +51,7 @@ export default function Home() {
             Odkryj swoją <span className="text-primary-400">muzyczną tożsamość</span>
           </h1>
           <p className="text-xl text-gray-400 mb-8">
-            Wavee to Twój personalny przewodnik po świecie muzyki. 
+            waveeProjectBW to Twój personalny przewodnik po świecie muzyki. 
             Recenzuj utwory, odkrywaj nowe brzmienia i twórz playlisty dopasowane do Twojego gustu.
           </p>
           {!isAuthenticated && (

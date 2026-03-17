@@ -77,7 +77,7 @@ export default function Login() {
           </div>
         </div>
 
-        <h1 className="text-3xl font-bold text-white mb-2">Zaloguj się do Wavee</h1>
+        <h1 className="text-3xl font-bold text-white mb-2">Zaloguj się do waveeProjectBW</h1>
         <p className="text-gray-400 mb-8">
           Połącz swoje konto Spotify lub wypróbuj wersję demo
         </p>

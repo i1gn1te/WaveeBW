@@ -1,7 +1,7 @@
 {
-  "name": "wavee-server",
+  "name": "waveeProjectBW-server",
   "version": "1.0.0",
-  "description": "Wavee Music Recommendation API",
+  "description": "waveeProjectBW Music Recommendation API",
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
@@ -12,7 +12,7 @@
     "db:studio": "prisma studio"
   },
   "keywords": [
-    "wavee",
+    "waveeProjectBW",
     "spotify",
     "prisma"
   ],

@@ -49,7 +49,7 @@ app.use('/api/playlists', playlists_js_1.default);
 app.use('/api/recommendations', recommendations_js_1.default);
 // Health check
 app.get('/api/health', (req, res) => {
-    res.json({ status: 'ok', message: 'Wavee API is running 🎵' });
+    res.json({ status: 'ok', message: 'waveeProjectBW API is running 🎵' });
 });
 // Error handler
 app.use((err, req, res, next) => {
@@ -57,6 +57,6 @@ app.use((err, req, res, next) => {
     res.status(500).json({ error: 'Something went wrong!' });
 });
 app.listen(PORT, '0.0.0.0', () => {
-    console.log(`🎵 Wavee server running on http://localhost:${PORT}`);
+    console.log(`🎵 waveeProjectBW server running on http://localhost:${PORT}`);
 });
 //# sourceMappingURL=index.js.map
