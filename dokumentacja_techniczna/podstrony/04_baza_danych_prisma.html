@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>04 - Baza danych i Prisma</title>
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <h1>04. Baza danych i Prisma</h1>
+      <p class="muted">W tej sekcji masz dokladny opis modeli, relacji i ograniczen.</p>
+      <div class="breadcrumb"><a href="../WAVEE_PROJECT_BW_DOKUMENTACJA_TECHNICZNA.html">Powrot do strony glownej</a></div>
+    </header>
+
+    <section class="card">
+      <h2>Plik: backend/prisma/schema.prisma</h2>
+      <p>
+        Projekt pracuje na PostgreSQL. Prisma trzyma modele i pilnuje spojnosc relacji.
+      </p>
+      <pre><code>datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+</code></pre>
+    </section>
+
+    <section class="card">
+      <h2>Model User</h2>
+      <ul>
+        <li><code>spotifyId</code> unikalne ID usera.</li>
+        <li><code>email</code> moze byc null (np. niektore profile).</li>
+        <li><code>favoriteGenres</code> tablica string.</li>
+        <li>Relacje do <code>Review</code>, <code>Playlist</code>, <code>LikedTrack</code>.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Model Review</h2>
+      <p>To nie jest tylko ocena. Tu jest tez snapshot metadanych utworu i cechy audio.</p>
+      <ul>
+        <li><code>trackId</code>, <code>trackName</code>, <code>artistName</code>, <code>albumName</code></li>
+        <li><code>rating</code> 0.5 do 5.0</li>
+        <li><code>tempo</code>, <code>key</code>, <code>energy</code>, <code>danceability</code>, <code>valence</code></li>
+        <li><code>@@unique([userId, trackId])</code> blokuje duplikat tej samej recenzji usera na ten sam utwor</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Model Playlist i PlaylistTrack</h2>
+      <ul>
+        <li>Playlist ma nazwe, opis, wlasciciela i opcjonalne spotifyPlaylistId.</li>
+        <li>PlaylistTrack trzyma pozycje w playliscie.</li>
+        <li><code>@@unique([playlistId, trackId])</code> ogranicza duplikaty trackow.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Model LikedTrack</h2>
+      <p>
+        To model pod funkcje rozszerzone (ulubione, rekomendacje personalne, profil gustu).
+        Trzyma tez cechy audio i tablice gatunkow.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Wnioski z projektu bazy</h2>
+      <ol>
+        <li>Dane sa dobrze znormalizowane jak na ten poziom aplikacji.</li>
+        <li>Wazne ograniczenia unique chronia przed logicznymi duplikatami.</li>
+        <li>Relacje i cascade delete ulatwiaja porzadek przy usuwaniu usera.</li>
+      </ol>
+    </section>
+
+    <footer class="footer">
+      <p>Nastepna podstrona: <a href="05_frontend_rdzen.html">05. Frontend rdzen i komunikacja</a></p>
+    </footer>
+  </div>
+</body>
+</html>

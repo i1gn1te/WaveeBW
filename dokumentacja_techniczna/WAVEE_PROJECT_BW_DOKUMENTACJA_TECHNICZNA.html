@@ -3,169 +3,119 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>waveeProjectBW - Dokumentacja Techniczna</title>
-  <style>
-    body { font-family: Arial, sans-serif; line-height: 1.6; color: #111; margin: 0; background: #f4f6f8; }
-    .wrap { max-width: 980px; margin: 24px auto; background: #fff; padding: 28px; border-radius: 12px; box-shadow: 0 8px 26px rgba(0,0,0,.08); }
-    h1, h2, h3 { color: #0f172a; }
-    h1 { font-size: 30px; margin-top: 0; }
-    h2 { font-size: 22px; margin-top: 30px; border-bottom: 1px solid #e5e7eb; padding-bottom: 6px; }
-    h3 { font-size: 18px; margin-top: 20px; }
-    code { background: #eef2ff; padding: 2px 6px; border-radius: 6px; }
-    pre { background: #0b1020; color: #e2e8f0; padding: 14px; border-radius: 10px; overflow: auto; }
-    ul, ol { padding-left: 20px; }
-    .sig { margin-top: 28px; padding-top: 16px; border-top: 1px dashed #cbd5e1; }
-    .muted { color: #475569; }
-    @media print {
-      body { background: #fff; }
-      .wrap { box-shadow: none; margin: 0; max-width: 100%; border-radius: 0; }
-      a { color: #000; text-decoration: none; }
-    }
-  </style>
+  <title>waveeProjectBW - Dokumentacja Techniczna (Start)</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <main class="wrap">
-    <h1>waveeProjectBW - pelna dokumentacja techniczna</h1>
-    <p class="muted">Wersja HTML do wygodnego czytania i szybkiego wydruku do PDF.</p>
+  <div class="page">
+    <header class="header">
+      <span class="badge">MEGA DOKLADNA WERSJA</span>
+      <h1>waveeProjectBW - Dokumentacja Techniczna</h1>
+      <p class="muted">
+        To jest strona glowna dokumentacji. Dalej masz podstrony, gdzie kazdy wazny obszar projektu jest
+        rozpisany bardzo szczegolowo i prostym jezykiem.
+      </p>
 
-    <h2>1. O czym jest projekt</h2>
-    <p>waveeProjectBW to aplikacja muzyczna typu full-stack. Uzytkownik moze wyszukiwac piosenki, dodawac recenzje, sprawdzac audio features, budowac playlisty i przegladac spolecznosc. Aplikacja ma tez tryb demo, wiec dziala nawet bez pelnej konfiguracji Spotify.</p>
+      <nav class="nav">
+        <a href="podstrony/01_architektura_i_przeplyw.html">01. Architektura i przeplyw danych</a>
+        <a href="podstrony/02_backend_rdzen.html">02. Backend rdzen i middleware</a>
+        <a href="podstrony/03_backend_route_api.html">03. Backend route i API</a>
+        <a href="podstrony/04_baza_danych_prisma.html">04. Baza danych i Prisma</a>
+        <a href="podstrony/05_frontend_rdzen.html">05. Frontend rdzen i komunikacja</a>
+        <a href="podstrony/06_frontend_strony_ui.html">06. Frontend strony i UI</a>
+        <a href="podstrony/07_uruchomienie_bezpieczenstwo_testy.html">07. Uruchomienie, bezpieczenstwo, testy</a>
+      </nav>
+    </header>
 
-    <h2>2. Architektura</h2>
-    <ul>
-      <li>Frontend: React + Vite + Tailwind</li>
-      <li>Backend: Node.js + Express + Prisma</li>
-      <li>Baza: PostgreSQL</li>
-      <li>Integracja zewnetrzna: Spotify Web API</li>
-    </ul>
-
-    <h3>Przeplyw danych</h3>
-    <ol>
-      <li>Frontend wysyla zapytanie pod <code>/api/*</code>.</li>
-      <li>Backend obsluguje auth i logike domenowa.</li>
-      <li>Backend bierze dane z PostgreSQL i/lub Spotify API.</li>
-      <li>Zwrot JSON do frontendu.</li>
-    </ol>
-
-    <h2>3. Backend - technicznie</h2>
-    <p>Serwer startuje z pliku <code>backend/src/index.js</code>, ustawia CORS, parser JSON, cookie parser i podpina route'y.</p>
-
-    <pre><code>app.use('/api/auth', authRoutes)
-app.use('/api/user', userRoutes)
-app.use('/api/reviews', reviewsRoutes)
-app.use('/api/spotify', spotifyRoutes)
-app.use('/api/playlists', playlistsRoutes)
-app.use('/api/recommendations', recommendationsRoutes)
-</code></pre>
-
-    <p>Middleware auth bierze JWT z cookie, dekoduje go i gdy trzeba odswieza token Spotify.</p>
-
-    <pre><code>const token = req.cookies.token || req.headers.authorization?.split(' ')[1]
-const decoded = jwt.verify(token, process.env.JWT_SECRET)
-req.userId = decoded.userId
-req.spotifyAccessToken = decoded.spotifyAccessToken
-</code></pre>
-
-    <h2>4. Baza danych (Prisma)</h2>
-    <p>Modele glowne:</p>
-    <ul>
-      <li><code>User</code> - dane konta i preferencje muzyczne</li>
-      <li><code>Review</code> - recenzja + snapshot danych utworu</li>
-      <li><code>Playlist</code> i <code>PlaylistTrack</code> - playlisty usera</li>
-      <li><code>LikedTrack</code> - baza pod przyszle like/favorite</li>
-    </ul>
-    <p>Wazny constraint: <code>@@unique([userId, trackId])</code> w recenzjach.</p>
-
-    <h2>5. API endpointy</h2>
-    <h3>/api/auth</h3>
-    <ul>
-      <li>POST /register</li>
-      <li>POST /local-login</li>
-      <li>GET /login</li>
-      <li>POST /demo-login</li>
-      <li>GET /callback</li>
-      <li>GET /me</li>
-      <li>POST /refresh</li>
-      <li>POST /logout</li>
-    </ul>
-
-    <h3>/api/spotify</h3>
-    <ul>
-      <li>GET /search</li>
-      <li>GET /track/:trackId</li>
-      <li>GET /audio-features/:trackId</li>
-      <li>GET /top/tracks</li>
-      <li>GET /top/artists</li>
-      <li>GET /genres</li>
-    </ul>
-
-    <h3>/api/reviews</h3>
-    <ul>
-      <li>POST /</li>
-      <li>GET /my</li>
-      <li>GET /track/:trackId</li>
-      <li>GET /:reviewId</li>
-      <li>DELETE /:reviewId</li>
-      <li>GET /</li>
-    </ul>
-
-    <h3>/api/playlists</h3>
-    <ul>
-      <li>POST /</li>
-      <li>GET /my</li>
-      <li>GET /:playlistId</li>
-      <li>POST /:playlistId/tracks</li>
-      <li>DELETE /:playlistId/tracks/:trackId</li>
-      <li>POST /:playlistId/sync</li>
-      <li>DELETE /:playlistId</li>
-    </ul>
-
-    <h2>6. Frontend - co i jak</h2>
-    <p>Routing jest w <code>frontend/src/App.tsx</code>. Strony w protected route to m.in. Dashboard, Search, Track, Reviews, Generator, Community, Profile.</p>
-
-    <p>W <code>frontend/src/lib/api.ts</code> jest interceptor 401 i auto refresh sesji, co jest bardzo wygodne i uzytkownik mniej widzi bledy logowania.</p>
-
-    <pre><code>if (status === 401 &amp;&amp; !originalRequest._retry) {
-  originalRequest._retry = true
-  await api.post('/auth/refresh')
-  return api(originalRequest)
-}
-</code></pre>
-
-    <h2>7. Tryb demo</h2>
-    <p>Tryb demo opiera sie o <code>backend/src/lib/mockData.js</code>. Pozwala pokazac prawie cala aplikacje bez API key Spotify. To jestesmy bardzo mocna rzecz na prezentacje.</p>
-
-    <h2>8. Bezpieczenstwo i uwagi</h2>
-    <ul>
-      <li>Jest auth middleware + kontrole dostepu do zasobow usera.</li>
-      <li>Jest walidacja inputu przez Zod.</li>
-      <li>Jest fallback bledow Spotify do czytelnych komunikatow.</li>
-      <li>Do produkcji warto dac secure cookie i rate limiting.</li>
-    </ul>
-
-    <h2>9. Uruchomienie</h2>
-    <h3>Backend</h3>
-    <pre><code>cd backend
-npm install
-npm run db:generate
-npm run db:push
-npm run dev
-</code></pre>
-
-    <h3>Frontend</h3>
-    <pre><code>cd frontend
-npm install
-npm run dev
-</code></pre>
-
-    <h2>10. Podsumowanie</h2>
-    <p>Projekt ma sensowna architekture, dobre rozdzielenie odpowiedzialnosci i da sie go spokojnie rozwijac. Na poziom 3 klasy technikum ten poziom jest bardzo ok i nie wyglada na przypadkowy kod.</p>
-
-    <section class="sig">
-      <h3>Podpis autorow dokumentacji</h3>
-      <p>Aleksander Baran<br/>Franciszek Wawrzeń</p>
-      <p>Data: 17.03.2026</p>
+    <section class="card">
+      <h2>Dlaczego tekst teraz bedzie widoczny</h2>
+      <ul>
+        <li>Ustawiony jest jasny background i ciemny kolor tekstu globalnie.</li>
+        <li>Kazda karta ma biale tlo i osobny kontrast (tekst nie zniknie na gradientach).</li>
+        <li>Kolory kodu w <code>pre</code> sa stale i nie zaleza od przypadkowego stylu przegladarki.</li>
+        <li>Dziala tez tryb drukowania, wiec mozna wygodnie generowac PDF.</li>
+      </ul>
     </section>
-  </main>
+
+    <section class="card">
+      <h2>Jak czytac ta dokumentacje</h2>
+      <ol>
+        <li>Najpierw odpal strone 01 i 02, bo tam jest fundament dzialania programu.</li>
+        <li>Potem przejdz 03 i 04, bo tam sa endpointy i baza danych.</li>
+        <li>Nastepnie 05 i 06, bo tam frontend i wszystkie ekrany.</li>
+        <li>Na koncu 07, bo tam deployment, bezpieczeństwo i plan testow.</li>
+      </ol>
+      <p class="muted">
+        W calosci dokumentacji znajdziesz duzo praktycznych skrawkow kodu i opisy "co, po co, kiedy".
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Spis kluczowych plikow, ktore sa analizowane</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Warstwa</th>
+              <th>Plik</th>
+              <th>Co robi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Backend</td>
+              <td><code>backend/src/index.js</code></td>
+              <td>Start serwera, middleware, podpiecie route, health check</td>
+            </tr>
+            <tr>
+              <td>Backend</td>
+              <td><code>backend/src/middleware/auth.js</code></td>
+              <td>Weryfikacja JWT i odswiezanie tokenow Spotify</td>
+            </tr>
+            <tr>
+              <td>Backend</td>
+              <td><code>backend/src/lib/spotify.js</code></td>
+              <td>Integracja z Spotify API i helpery rekomendacji</td>
+            </tr>
+            <tr>
+              <td>Backend</td>
+              <td><code>backend/src/routes/*.js</code></td>
+              <td>Auth, user, reviews, spotify, playlists, recommendations</td>
+            </tr>
+            <tr>
+              <td>Baza</td>
+              <td><code>backend/prisma/schema.prisma</code></td>
+              <td>Modele danych i relacje miedzy tabelami</td>
+            </tr>
+            <tr>
+              <td>Frontend</td>
+              <td><code>frontend/src/main.tsx</code></td>
+              <td>Punkt startowy React + QueryClient</td>
+            </tr>
+            <tr>
+              <td>Frontend</td>
+              <td><code>frontend/src/App.tsx</code></td>
+              <td>Routing i ochrona tras</td>
+            </tr>
+            <tr>
+              <td>Frontend</td>
+              <td><code>frontend/src/lib/api.ts</code></td>
+              <td>HTTP client, interceptor 401, refresh sesji</td>
+            </tr>
+            <tr>
+              <td>Frontend</td>
+              <td><code>frontend/src/pages/*.tsx</code></td>
+              <td>Logika ekranow i interakcje usera</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p><strong>Podpis autorow dokumentacji:</strong> Aleksander Baran, Franciszek Wawrzeń</p>
+      <p>Data: 17.03.2026</p>
+    </footer>
+  </div>
 </body>
 </html>

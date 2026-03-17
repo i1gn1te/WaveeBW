@@ -1,0 +1,775 @@
+<!doctype html><html lang='pl'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1'/><title>waveeProjectBW - Dokumentacja FULL</title><style>* {
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #f3f6fb;
+  --panel: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --line: #dbe4f0;
+  --accent: #0ea5e9;
+  --accent-strong: #0369a1;
+  --code-bg: #0b1220;
+  --code-text: #e2e8f0;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+  line-height: 1.65;
+  color: var(--text);
+  background: linear-gradient(180deg, #eef4ff 0%, #f8fbff 42%, #eef6ff 100%);
+}
+
+.page {
+  max-width: 1100px;
+  margin: 22px auto;
+  padding: 20px;
+}
+
+.header {
+  background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 48%, #ecfeff 100%);
+  border: 1px solid #bae6fd;
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 10px 24px rgba(2, 132, 199, 0.08);
+}
+
+h1, h2, h3 {
+  color: #0b3a53;
+  margin-top: 0;
+}
+
+h1 {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+h2 {
+  font-size: 24px;
+  margin-top: 28px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--line);
+}
+
+h3 {
+  font-size: 20px;
+  margin-top: 20px;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.nav {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 10px;
+}
+
+.nav a {
+  display: block;
+  text-decoration: none;
+  color: #073b4c;
+  background: #ffffff;
+  border: 1px solid #bae6fd;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-weight: 600;
+}
+
+.nav a:hover {
+  border-color: #38bdf8;
+  background: #f0f9ff;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 16px;
+  margin-top: 14px;
+  box-shadow: 0 7px 18px rgba(15, 23, 42, 0.04);
+}
+
+ul, ol {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  padding-left: 22px;
+}
+
+code {
+  background: #edf2ff;
+  color: #0f172a;
+  padding: 2px 6px;
+  border-radius: 5px;
+  font-family: Consolas, "Courier New", monospace;
+}
+
+pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 14px;
+  border-radius: 10px;
+  overflow-x: auto;
+  border: 1px solid #1e293b;
+}
+
+pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+th, td {
+  text-align: left;
+  border: 1px solid var(--line);
+  padding: 9px;
+  vertical-align: top;
+}
+
+th {
+  background: #ecfeff;
+  color: #0c4a6e;
+}
+
+.footer {
+  margin-top: 22px;
+  padding-top: 10px;
+  border-top: 1px dashed #94a3b8;
+  color: #334155;
+}
+
+.breadcrumb {
+  margin-top: 12px;
+}
+
+.breadcrumb a {
+  color: var(--accent-strong);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: #e0f2fe;
+  color: #0c4a6e;
+  border: 1px solid #7dd3fc;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+@media print {
+  body {
+    background: #ffffff;
+    color: #000000;
+  }
+
+  .page {
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .card, .header {
+    box-shadow: none;
+    border: 1px solid #999;
+  }
+
+  a {
+    color: #000;
+    text-decoration: none;
+  }
+}
+ .page{max-width:1200px} .pagebreak{page-break-before:always;border-top:2px dashed #94a3b8;margin:28px 0;}</style></head><body><div class='page'><header class='header'><h1>waveeProjectBW - Dokumentacja Techniczna FULL</h1><p class='muted'>Wersja scalona wszystkich podstron do wydruku PDF.</p></header><section class='card'><p class='badge'>01_architektura_i_przeplyw.html</p></section>
+  <div class="page">
+    <header class="header">
+      <h1>01. Architektura i przeplyw danych</h1>
+      <p class="muted">Tu jest rozpisane krok po kroku jak request idzie przez caly system.</p>
+      
+    </header>
+
+    <section class="card">
+      <h2>1) Co to jest za typ aplikacji</h2>
+      <p>
+        waveeProjectBW to klasyczny uklad klient-serwer. Klientem jest frontend React, serwerem backend Express.
+        Dodatkowo backend gada ze Spotify API i z baza PostgreSQL przez Prisma.
+      </p>
+      <ul>
+        <li>Frontend odpowiada za UI i interakcje usera.</li>
+        <li>Backend odpowiada za auth, logike biznesowa i zapis danych.</li>
+        <li>Baza przechowuje userow, recenzje, playlisty i inne dane trwale.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>2) Przeplyw requestu - prosty scenariusz</h2>
+      <ol>
+        <li>User otwiera strone i np. szuka piosenki.</li>
+        <li>Frontend wysyla GET na <code>/api/spotify/search?q=...</code>.</li>
+        <li>Backend sprawdza autoryzacje przez middleware.</li>
+        <li>Backend pobiera dane ze Spotify (lub mockData w demo).</li>
+        <li>Backend zwraca JSON.</li>
+        <li>Frontend renderuje wynik jako karty utworow.</li>
+      </ol>
+    </section>
+
+    <section class="card">
+      <h2>3) Przeplyw auth (normalny i demo)</h2>
+      <h3>Wariant A: Spotify OAuth</h3>
+      <ol>
+        <li>Frontend odpytuje <code>/api/auth/login</code> po URL logowania.</li>
+        <li>Backend zwraca URL do Spotify accounts.</li>
+        <li>User loguje sie w Spotify i wraca na <code>/api/auth/callback</code>.</li>
+        <li>Backend wymienia code na token i robi JWT cookie.</li>
+      </ol>
+
+      <h3>Wariant B: Demo</h3>
+      <ol>
+        <li>Frontend wywoluje <code>/api/auth/demo-login</code>.</li>
+        <li>Backend tworzy/odswieza usera demo i ustawia cookie.</li>
+        <li>Aplikacja dziala na mockData bez prawdziwych tokenow Spotify.</li>
+      </ol>
+    </section>
+
+    <section class="card">
+      <h2>4) Najwazniejsze punkty architektury</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Obszar</th>
+              <th>Plik</th>
+              <th>Znaczenie</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Start serwera</td>
+              <td><code>backend/src/index.js</code></td>
+              <td>Tu lacza sie wszystkie trasy i middleware.</td>
+            </tr>
+            <tr>
+              <td>Start frontu</td>
+              <td><code>frontend/src/main.tsx</code></td>
+              <td>Tu startuje app i provider cache.</td>
+            </tr>
+            <tr>
+              <td>Routing frontu</td>
+              <td><code>frontend/src/App.tsx</code></td>
+              <td>Tu sa trasy publiczne i chronione.</td>
+            </tr>
+            <tr>
+              <td>API klient</td>
+              <td><code>frontend/src/lib/api.ts</code></td>
+              <td>Jedno miejsce do requestow i odswiezania sesji.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p>Nastepna podstrona: <a href="02_backend_rdzen.html">02. Backend rdzen i middleware</a></p>
+    </footer>
+  </div>
+<div class='pagebreak'></div><section class='card'><p class='badge'>02_backend_rdzen.html</p></section>
+  <div class="page">
+    <header class="header">
+      <h1>02. Backend rdzen i middleware</h1>
+      <p class="muted">Tutaj jest analiza glownego startu serwera oraz auth middleware.</p>
+      
+    </header>
+
+    <section class="card">
+      <h2>Plik: backend/src/index.js</h2>
+      <p>To jest centralny punkt backendu. On robi 6 krytycznych rzeczy:</p>
+      <ol>
+        <li>Laduje konfiguracje ze zmiennych srodowiskowych.</li>
+        <li>Uruchamia CORS i whitelist originow.</li>
+        <li>Uruchamia parser JSON i obsluge cookie.</li>
+        <li>Podpina route auth, user, reviews, spotify, playlists, recommendations.</li>
+        <li>Daje endpoint zdrowia <code>/api/health</code>.</li>
+        <li>Uruchamia globalny handler bledow.</li>
+      </ol>
+
+      <pre><code>app.use('/api/auth', authRoutes)
+app.use('/api/user', userRoutes)
+app.use('/api/reviews', reviewsRoutes)
+app.use('/api/spotify', spotifyRoutes)
+app.use('/api/playlists', playlistsRoutes)
+app.use('/api/recommendations', recommendationsRoutes)
+</code></pre>
+    </section>
+
+    <section class="card">
+      <h2>Plik: backend/src/middleware/auth.js</h2>
+      <p>Ten middleware pilnuje, zeby request mial wazna sesje. Najpierw bierze token, potem go sprawdza.</p>
+      <pre><code>const token = req.cookies.token || req.headers.authorization?.split(' ')[1]
+if (!token) return res.status(401).json({ error: 'Authentication required' })
+
+const decoded = jwt.verify(token, process.env.JWT_SECRET)
+req.userId = decoded.userId
+req.spotifyAccessToken = decoded.spotifyAccessToken
+</code></pre>
+
+      <h3>Co sie dzieje gdy JWT wygasnie</h3>
+      <ul>
+        <li>Middleware probuje odczytac token mimo expiracji.</li>
+        <li>Jesli ma refresh token Spotify, robi odswiezenie access tokena.</li>
+        <li>Wystawia nowe cookie JWT i request idzie dalej bez wyrzucania usera.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Plik: backend/src/lib/prisma.js</h2>
+      <p>
+        Singleton Prisma. Dzieki temu przy hot-reload nie tworzy sie duzo klientow DB i nie ma
+        glupich problemow z polaczeniami.
+      </p>
+      <pre><code>const globalForPrisma = globalThis
+export const prisma = globalForPrisma.prisma ?? new PrismaClient()
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
+</code></pre>
+    </section>
+
+    <section class="card">
+      <h2>Plik: backend/src/lib/spotify.js (rdzen integracji)</h2>
+      <p>To jest najwiekszy plik logiczny backendu. Odpowiada za:</p>
+      <ul>
+        <li>zbudowanie URL logowania Spotify,</li>
+        <li>wymiane code na tokeny,</li>
+        <li>refresh tokena,</li>
+        <li>search i track details,</li>
+        <li>audio features z fallbackiem na <code>null</code>,</li>
+        <li>rekomendacje z nowa strategia (bez starych deprecated endpointow).</li>
+      </ul>
+      <p>
+        Najwazniejsze: projekt juz jest przygotowany na zmiany Spotify po 2024, wiec nie opiera sie na
+        wycofanym endpoint <code>/recommendations</code> w starej formie.
+      </p>
+    </section>
+
+    <footer class="footer">
+      <p>Nastepna podstrona: <a href="03_backend_route_api.html">03. Backend route i API</a></p>
+    </footer>
+  </div>
+<div class='pagebreak'></div><section class='card'><p class='badge'>03_backend_route_api.html</p></section>
+  <div class="page">
+    <header class="header">
+      <h1>03. Backend route i API</h1>
+      <p class="muted">Tu rozkladam endpointy po kolei i opisuje co robia w praktyce.</p>
+      
+    </header>
+
+    <section class="card">
+      <h2>1) Auth routes - backend/src/routes/auth.js</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Endpoint</th><th>Metoda</th><th>Opis</th></tr></thead>
+          <tbody>
+            <tr><td>/api/auth/register</td><td>POST</td><td>Rejestracja email + haslo (lokalnie)</td></tr>
+            <tr><td>/api/auth/local-login</td><td>POST</td><td>Login lokalny</td></tr>
+            <tr><td>/api/auth/login</td><td>GET</td><td>Pobranie URL do Spotify OAuth</td></tr>
+            <tr><td>/api/auth/demo-login</td><td>POST</td><td>Szybki login demo</td></tr>
+            <tr><td>/api/auth/callback</td><td>GET</td><td>Callback Spotify</td></tr>
+            <tr><td>/api/auth/me</td><td>GET</td><td>Pobranie zalogowanego usera</td></tr>
+            <tr><td>/api/auth/refresh</td><td>POST</td><td>Odswiezenie tokenu</td></tr>
+            <tr><td>/api/auth/logout</td><td>POST</td><td>Wylogowanie</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <pre><code>const localAuthSchema = z.object({
+  email: z.string().email().max(120),
+  password: z.string().min(6).max(72),
+})
+</code></pre>
+    </section>
+
+    <section class="card">
+      <h2>2) Spotify routes - backend/src/routes/spotify.js</h2>
+      <ul>
+        <li><code>GET /api/spotify/search</code> - szukanie piosenek.</li>
+        <li><code>GET /api/spotify/track/:trackId</code> - szczegoly utworu + audio features.</li>
+        <li><code>GET /api/spotify/audio-features/:trackId</code> - tylko audio features.</li>
+        <li><code>GET /api/spotify/top/tracks</code> i <code>/top/artists</code> - top usera.</li>
+        <li><code>GET /api/spotify/genres</code> - lista gatunkow.</li>
+      </ul>
+      <p>
+        Dla usera demo backend nie pyta Spotify i zwraca dane z <code>mockData.js</code>.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>3) Reviews routes - backend/src/routes/reviews.js</h2>
+      <p>
+        Najmocniejsza rzecz: recenzja idzie jako upsert, czyli jak ten user juz recenzowal ten track,
+        to idzie update, a nie drugi rekord.
+      </p>
+      <pre><code>await prisma.review.upsert({
+  where: { userId_trackId: { userId: req.userId, trackId } },
+  update: { rating, content },
+  create: { userId: req.userId, trackId, rating, content }
+})
+</code></pre>
+      <ul>
+        <li><code>GET /api/reviews/my</code> - recenzje usera z paginacja.</li>
+        <li><code>GET /api/reviews/track/:trackId</code> - feed recenzji utworu.</li>
+        <li><code>DELETE /api/reviews/:reviewId</code> - tylko wlasciciel moze usunac.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>4) Playlists i recommendations</h2>
+      <h3>Playlists - backend/src/routes/playlists.js</h3>
+      <ul>
+        <li>CRUD playlist</li>
+        <li>dodawanie/usuwanie trackow</li>
+        <li>sync playlisty do Spotify</li>
+      </ul>
+
+      <h3>Recommendations - backend/src/routes/recommendations.js</h3>
+      <ul>
+        <li><code>/similar/:trackId</code> - podobne utwory</li>
+        <li><code>/discover/:genre</code> - odkrywanie po gatunku</li>
+      </ul>
+    </section>
+
+    <footer class="footer">
+      <p>Nastepna podstrona: <a href="04_baza_danych_prisma.html">04. Baza danych i Prisma</a></p>
+    </footer>
+  </div>
+<div class='pagebreak'></div><section class='card'><p class='badge'>04_baza_danych_prisma.html</p></section>
+  <div class="page">
+    <header class="header">
+      <h1>04. Baza danych i Prisma</h1>
+      <p class="muted">W tej sekcji masz dokladny opis modeli, relacji i ograniczen.</p>
+      
+    </header>
+
+    <section class="card">
+      <h2>Plik: backend/prisma/schema.prisma</h2>
+      <p>
+        Projekt pracuje na PostgreSQL. Prisma trzyma modele i pilnuje spojnosc relacji.
+      </p>
+      <pre><code>datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+</code></pre>
+    </section>
+
+    <section class="card">
+      <h2>Model User</h2>
+      <ul>
+        <li><code>spotifyId</code> unikalne ID usera.</li>
+        <li><code>email</code> moze byc null (np. niektore profile).</li>
+        <li><code>favoriteGenres</code> tablica string.</li>
+        <li>Relacje do <code>Review</code>, <code>Playlist</code>, <code>LikedTrack</code>.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Model Review</h2>
+      <p>To nie jest tylko ocena. Tu jest tez snapshot metadanych utworu i cechy audio.</p>
+      <ul>
+        <li><code>trackId</code>, <code>trackName</code>, <code>artistName</code>, <code>albumName</code></li>
+        <li><code>rating</code> 0.5 do 5.0</li>
+        <li><code>tempo</code>, <code>key</code>, <code>energy</code>, <code>danceability</code>, <code>valence</code></li>
+        <li><code>@@unique([userId, trackId])</code> blokuje duplikat tej samej recenzji usera na ten sam utwor</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Model Playlist i PlaylistTrack</h2>
+      <ul>
+        <li>Playlist ma nazwe, opis, wlasciciela i opcjonalne spotifyPlaylistId.</li>
+        <li>PlaylistTrack trzyma pozycje w playliscie.</li>
+        <li><code>@@unique([playlistId, trackId])</code> ogranicza duplikaty trackow.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Model LikedTrack</h2>
+      <p>
+        To model pod funkcje rozszerzone (ulubione, rekomendacje personalne, profil gustu).
+        Trzyma tez cechy audio i tablice gatunkow.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Wnioski z projektu bazy</h2>
+      <ol>
+        <li>Dane sa dobrze znormalizowane jak na ten poziom aplikacji.</li>
+        <li>Wazne ograniczenia unique chronia przed logicznymi duplikatami.</li>
+        <li>Relacje i cascade delete ulatwiaja porzadek przy usuwaniu usera.</li>
+      </ol>
+    </section>
+
+    <footer class="footer">
+      <p>Nastepna podstrona: <a href="05_frontend_rdzen.html">05. Frontend rdzen i komunikacja</a></p>
+    </footer>
+  </div>
+<div class='pagebreak'></div><section class='card'><p class='badge'>05_frontend_rdzen.html</p></section>
+  <div class="page">
+    <header class="header">
+      <h1>05. Frontend rdzen i komunikacja</h1>
+      <p class="muted">To jest serce frontendu: start appki, routing, sesja i API client.</p>
+      
+    </header>
+
+    <section class="card">
+      <h2>1) frontend/src/main.tsx</h2>
+      <p>
+        Tu rusza React i konfiguracja cache query. QueryClient trzyma dane z API i ogranicza liczbe
+        zapytan do backendu.
+      </p>
+      <pre><code>export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5,
+      retry: 1,
+    },
+  },
+})
+</code></pre>
+    </section>
+
+    <section class="card">
+      <h2>2) frontend/src/App.tsx</h2>
+      <p>
+        Tu jest mapa wszystkich tras. Czesci prywatne sa opakowane przez ProtectedRoute.
+      </p>
+      <ul>
+        <li>Publiczne: Home, Login</li>
+        <li>Chronione: Dashboard, Search, Track, Reviews, Generator, Community, Profile</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>3) frontend/src/contexts/AuthContext.tsx</h2>
+      <p>
+        Context daje globalny stan zalogowania i usera. Przy starcie probuje pobrac <code>/auth/me</code>.
+      </p>
+      <pre><code>const { data } = await getCurrentUser()
+setUser(data)
+</code></pre>
+      <p>
+        Przy logout czyści cache query przez <code>queryClient.clear()</code>, wiec nie ma starych danych po sesji.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>4) frontend/src/lib/api.ts</h2>
+      <p>
+        To jeden wspolny klient HTTP. Najwazniejszy jest interceptor 401, ktory sam probuje odswiezyc sesje.
+      </p>
+      <pre><code>if (!originalRequest || status !== 401 || originalRequest._retry || shouldSkipRefresh) {
+  return Promise.reject(error)
+}
+originalRequest._retry = true
+await api.post('/auth/refresh')
+return api(originalRequest)
+</code></pre>
+
+      <h3>Dlaczego to jest dobre</h3>
+      <ul>
+        <li>Nie trzeba recznie obslugiwac refresh w kazdej stronie.</li>
+        <li>User rzadziej widzi logowanie od nowa.</li>
+        <li>Logika API jest skupiona w jednym miejscu.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>5) Layout i ProtectedRoute</h2>
+      <ul>
+        <li><code>Layout.tsx</code> daje wspolna nawigacje i stopke.</li>
+        <li><code>ProtectedRoute.tsx</code> blokuje wejscie bez sesji.</li>
+      </ul>
+    </section>
+
+    <footer class="footer">
+      <p>Nastepna podstrona: <a href="06_frontend_strony_ui.html">06. Frontend strony i UI</a></p>
+    </footer>
+  </div>
+<div class='pagebreak'></div><section class='card'><p class='badge'>06_frontend_strony_ui.html</p></section>
+  <div class="page">
+    <header class="header">
+      <h1>06. Frontend strony i UI</h1>
+      <p class="muted">Dokladny opis ekranow i komponentow, co user klika i co sie dzieje pod spodem.</p>
+      
+    </header>
+
+    <section class="card">
+      <h2>Home i Login</h2>
+      <ul>
+        <li><code>pages/Home.tsx</code> ma przycisk Spotify i przycisk Demo.</li>
+        <li><code>pages/Login.tsx</code> odpytuje backend o URL logowania Spotify.</li>
+      </ul>
+      <p>
+        W obu ekranach jest fallback demo, wiec prezentacja projektu nie pada przez brak API key.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Dashboard</h2>
+      <p><code>pages/Dashboard.tsx</code> odpytuje:</p>
+      <ul>
+        <li>top tracks,</li>
+        <li>top artists,</li>
+        <li>statystyki recenzji,</li>
+        <li>ostatnie recenzje usera.</li>
+      </ul>
+      <p>
+        Ekran ma przelacznik zakresu czasu, np. 4 tygodnie, 6 miesiecy, all-time.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Search i Track</h2>
+      <h3>Search</h3>
+      <ul>
+        <li>formularz szukania po frazie,</li>
+        <li>wyniki jako karty trackow,</li>
+        <li>obsluga loading i error.</li>
+      </ul>
+
+      <h3>Track</h3>
+      <ul>
+        <li>szczegoly utworu (artist, album, czas),</li>
+        <li>audio features,</li>
+        <li>formularz recenzji (gwiazdki + komentarz),</li>
+        <li>lista recenzji i podobne utwory.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Reviews, Generator, Profile, Community</h2>
+      <h3>Reviews</h3>
+      <p>Lista recenzji usera + usuwanie.</p>
+
+      <h3>PlaylistGenerator</h3>
+      <p>
+        Dwa tryby: po gatunku albo po wybranym tracku. Ma usuwanie niepasujacych utworow i podmiane z puli zapasowej.
+      </p>
+
+      <h3>Profile</h3>
+      <p>Edycja displayName, bio i favoriteGenres + statystyki.</p>
+
+      <h3>Community</h3>
+      <p>Szukanie userow i podglad profilu publicznego. W demo jest blokada tej funkcji.</p>
+    </section>
+
+    <section class="card">
+      <h2>Komponenty techniczne UI</h2>
+      <ul>
+        <li><code>AudioFeaturesDisplay.tsx</code> - paski energii, danceability itd.</li>
+        <li><code>StarRating.tsx</code> - gwiazdki z polowkami.</li>
+        <li><code>TrackCard.tsx</code> - karta utworu.</li>
+        <li><code>index.css</code> - globalny styl i scrollbar.</li>
+      </ul>
+    </section>
+
+    <footer class="footer">
+      <p>Nastepna podstrona: <a href="07_uruchomienie_bezpieczenstwo_testy.html">07. Uruchomienie, bezpieczenstwo, testy</a></p>
+    </footer>
+  </div>
+<div class='pagebreak'></div><section class='card'><p class='badge'>07_uruchomienie_bezpieczenstwo_testy.html</p></section>
+  <div class="page">
+    <header class="header">
+      <h1>07. Uruchomienie, bezpieczenstwo i testy</h1>
+      <p class="muted">Finalna sekcja: jak odpalic projekt, jak go testowac i na co uwazac.</p>
+      
+    </header>
+
+    <section class="card">
+      <h2>1) Uruchomienie lokalne</h2>
+      <h3>Backend</h3>
+      <pre><code>cd backend
+npm install
+npm run db:generate
+npm run db:push
+npm run dev
+</code></pre>
+
+      <h3>Frontend</h3>
+      <pre><code>cd frontend
+npm install
+npm run dev
+</code></pre>
+
+      <h3>Zmienne .env (backend)</h3>
+      <pre><code>PORT=3001
+CLIENT_URL=http://localhost:5173
+DATABASE_URL=postgresql://USER:PASS@localhost:5432/waveeProjectBW
+JWT_SECRET=twoj_super_sekret
+SPOTIFY_CLIENT_ID=...
+SPOTIFY_CLIENT_SECRET=...
+SPOTIFY_REDIRECT_URI=http://localhost:3001/api/auth/callback
+</code></pre>
+    </section>
+
+    <section class="card">
+      <h2>2) Checklista testow recznych</h2>
+      <ol>
+        <li>Login demo i wejscie do dashboard.</li>
+        <li>Wyszukanie tracka i wejscie do szczegolow.</li>
+        <li>Dodanie recenzji 4.5 i sprawdzenie listy recenzji.</li>
+        <li>Generator playlisty po gatunku i po tracku.</li>
+        <li>Usuniecie recenzji i weryfikacja odswiezenia danych.</li>
+        <li>Wylogowanie i proba wejscia na strone chroniona.</li>
+      </ol>
+    </section>
+
+    <section class="card">
+      <h2>3) Bezpieczenstwo - co jest i co warto dopchnac</h2>
+      <h3>Juz jest dobrze</h3>
+      <ul>
+        <li>JWT i middleware auth.</li>
+        <li>Walidacja danych przez Zod.</li>
+        <li>Kontrola wlasciciela zasobu (playlista/recenzja).</li>
+        <li>Obsluga bledow Spotify z czytelnym komunikatem.</li>
+      </ul>
+
+      <h3>Warto dorobic w kolejnym kroku</h3>
+      <ul>
+        <li>Rate limiting na endpointy logowania i search.</li>
+        <li><code>secure: true</code> dla cookie na produkcji.</li>
+        <li>Testy automatyczne backend route.</li>
+        <li>Monitoring i centralny logger.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>4) Co powiedziec przy obronie projektu</h2>
+      <ol>
+        <li>Pokazac tryb demo jako zabezpieczenie prezentacji.</li>
+        <li>Pokazac upsert recenzji i unikalnosc danych.</li>
+        <li>Pokazac interceptor 401 i auto-refresh sesji.</li>
+        <li>Pokazac jak frontend i backend dzialaja oddzielnie ale spojnie.</li>
+      </ol>
+      <p>
+        Taki flow zwykle robi bardzo dobre wrazenie, bo pokazuje nie tylko UI ale tez ogarnieta logike.
+      </p>
+    </section>
+
+    <footer class="footer">
+      <p>Podpis autorow dokumentacji: Aleksander Baran, Franciszek Wawrzeń</p>
+      <p>Koniec wersji wielostronicowej HTML.</p>
+    </footer>
+  </div>
+<div class='pagebreak'></div><footer class='footer'><p>Podpis autorow: Aleksander Baran, Franciszek Wawrze�</p><p>Data: 17.03.2026</p></footer></div></body></html>

@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>06 - Frontend strony i UI</title>
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <h1>06. Frontend strony i UI</h1>
+      <p class="muted">Dokladny opis ekranow i komponentow, co user klika i co sie dzieje pod spodem.</p>
+      <div class="breadcrumb"><a href="../WAVEE_PROJECT_BW_DOKUMENTACJA_TECHNICZNA.html">Powrot do strony glownej</a></div>
+    </header>
+
+    <section class="card">
+      <h2>Home i Login</h2>
+      <ul>
+        <li><code>pages/Home.tsx</code> ma przycisk Spotify i przycisk Demo.</li>
+        <li><code>pages/Login.tsx</code> odpytuje backend o URL logowania Spotify.</li>
+      </ul>
+      <p>
+        W obu ekranach jest fallback demo, wiec prezentacja projektu nie pada przez brak API key.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Dashboard</h2>
+      <p><code>pages/Dashboard.tsx</code> odpytuje:</p>
+      <ul>
+        <li>top tracks,</li>
+        <li>top artists,</li>
+        <li>statystyki recenzji,</li>
+        <li>ostatnie recenzje usera.</li>
+      </ul>
+      <p>
+        Ekran ma przelacznik zakresu czasu, np. 4 tygodnie, 6 miesiecy, all-time.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Search i Track</h2>
+      <h3>Search</h3>
+      <ul>
+        <li>formularz szukania po frazie,</li>
+        <li>wyniki jako karty trackow,</li>
+        <li>obsluga loading i error.</li>
+      </ul>
+
+      <h3>Track</h3>
+      <ul>
+        <li>szczegoly utworu (artist, album, czas),</li>
+        <li>audio features,</li>
+        <li>formularz recenzji (gwiazdki + komentarz),</li>
+        <li>lista recenzji i podobne utwory.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Reviews, Generator, Profile, Community</h2>
+      <h3>Reviews</h3>
+      <p>Lista recenzji usera + usuwanie.</p>
+
+      <h3>PlaylistGenerator</h3>
+      <p>
+        Dwa tryby: po gatunku albo po wybranym tracku. Ma usuwanie niepasujacych utworow i podmiane z puli zapasowej.
+      </p>
+
+      <h3>Profile</h3>
+      <p>Edycja displayName, bio i favoriteGenres + statystyki.</p>
+
+      <h3>Community</h3>
+      <p>Szukanie userow i podglad profilu publicznego. W demo jest blokada tej funkcji.</p>
+    </section>
+
+    <section class="card">
+      <h2>Komponenty techniczne UI</h2>
+      <ul>
+        <li><code>AudioFeaturesDisplay.tsx</code> - paski energii, danceability itd.</li>
+        <li><code>StarRating.tsx</code> - gwiazdki z polowkami.</li>
+        <li><code>TrackCard.tsx</code> - karta utworu.</li>
+        <li><code>index.css</code> - globalny styl i scrollbar.</li>
+      </ul>
+    </section>
+
+    <footer class="footer">
+      <p>Nastepna podstrona: <a href="07_uruchomienie_bezpieczenstwo_testy.html">07. Uruchomienie, bezpieczenstwo, testy</a></p>
+    </footer>
+  </div>
+</body>
+</html>
