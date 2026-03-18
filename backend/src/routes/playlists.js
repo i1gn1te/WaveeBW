@@ -1,4 +1,4 @@
-"use strict";
+﻿"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const prisma_js_1 = require("../lib/prisma.js");
@@ -13,7 +13,7 @@ const createPlaylistSchema = zod_1.z.object({
     trackIds: zod_1.z.array(zod_1.z.string()).optional(),
     isPublic: zod_1.z.boolean().optional()
 });
-// Create playlist
+// Tworzenie playlisty
 router.post('/', auth_js_1.authMiddleware, async (req, res) => {
     try {
         const validation = createPlaylistSchema.safeParse(req.body);
@@ -36,7 +36,7 @@ router.post('/', auth_js_1.authMiddleware, async (req, res) => {
         res.status(500).json({ error: 'Failed to create playlist' });
     }
 });
-// Get user's playlists
+// Pobierz playlisty usera
 router.get('/my', auth_js_1.authMiddleware, async (req, res) => {
     try {
         const playlists = await prisma_js_1.prisma.playlist.findMany({
@@ -57,7 +57,7 @@ router.get('/my', auth_js_1.authMiddleware, async (req, res) => {
         res.status(500).json({ error: 'Failed to get playlists' });
     }
 });
-// Get single playlist
+// Pobierz jedna playliste
 router.get('/:playlistId', async (req, res) => {
     try {
         const playlist = await prisma_js_1.prisma.playlist.findUnique({
@@ -79,7 +79,7 @@ router.get('/:playlistId', async (req, res) => {
         res.status(500).json({ error: 'Failed to get playlist' });
     }
 });
-// Add track to playlist
+// Dodaj utwor do playlisty
 router.post('/:playlistId/tracks', auth_js_1.authMiddleware, async (req, res) => {
     try {
         const { playlistId } = req.params;
@@ -93,7 +93,7 @@ router.post('/:playlistId/tracks', auth_js_1.authMiddleware, async (req, res) =>
         if (playlist.userId !== req.userId) {
             return res.status(403).json({ error: 'Not authorized' });
         }
-        // Get current max position
+        // Pobierz ostatnia pozycje
         const lastTrack = await prisma_js_1.prisma.playlistTrack.findFirst({
             where: { playlistId },
             orderBy: { position: 'desc' }
@@ -115,7 +115,7 @@ router.post('/:playlistId/tracks', auth_js_1.authMiddleware, async (req, res) =>
         res.status(500).json({ error: 'Failed to add track' });
     }
 });
-// Remove track from playlist
+// Usun utwor z playlisty
 router.delete('/:playlistId/tracks/:trackId', auth_js_1.authMiddleware, async (req, res) => {
     try {
         const { playlistId, trackId } = req.params;
@@ -135,7 +135,7 @@ router.delete('/:playlistId/tracks/:trackId', auth_js_1.authMiddleware, async (r
         res.status(500).json({ error: 'Failed to remove track' });
     }
 });
-// Sync playlist to Spotify
+// Wyslij playliste do Spotify
 router.post('/:playlistId/sync', auth_js_1.authMiddleware, async (req, res) => {
     try {
         const { playlistId } = req.params;
@@ -150,14 +150,14 @@ router.post('/:playlistId/sync', auth_js_1.authMiddleware, async (req, res) => {
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
         }
-        // Create Spotify playlist
+        // Utworz playliste w Spotify
         const spotifyPlaylist = await (0, spotify_js_1.createPlaylist)(req.spotifyAccessToken, user.spotifyId, playlist.name, playlist.description || undefined, playlist.isPublic);
-        // Add tracks to Spotify playlist
+        // Dodaj utwory do playlisty Spotify
         if (playlist.tracks.length > 0) {
             const trackUris = playlist.tracks.map((t) => `spotify:track:${t.trackId}`);
             await (0, spotify_js_1.addTracksToPlaylist)(req.spotifyAccessToken, spotifyPlaylist.id, trackUris);
         }
-        // Update local playlist with Spotify ID
+        // Zapisz Spotify ID w lokalnej playliscie
         await prisma_js_1.prisma.playlist.update({
             where: { id: playlistId },
             data: { spotifyPlaylistId: spotifyPlaylist.id }
@@ -173,7 +173,7 @@ router.post('/:playlistId/sync', auth_js_1.authMiddleware, async (req, res) => {
         return (0, routeHelpers_js_1.handleSpotifyRouteError)(res, error, 'Failed to sync playlist to Spotify');
     }
 });
-// Delete playlist
+// Usun playliste
 router.delete('/:playlistId', auth_js_1.authMiddleware, async (req, res) => {
     try {
         const playlist = await prisma_js_1.prisma.playlist.findUnique({
@@ -192,3 +192,4 @@ router.delete('/:playlistId', auth_js_1.authMiddleware, async (req, res) => {
 });
 exports.default = router;
 //# sourceMappingURL=playlists.js.map
+

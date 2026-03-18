@@ -1,4 +1,4 @@
-import axios from 'axios'
+﻿import axios from 'axios'
 
 const api = axios.create({
   baseURL: '/api',
@@ -41,12 +41,12 @@ api.interceptors.response.use(
   }
 )
 
-// Auth
+// Logowanie
 export const getLoginUrl = () => api.get<{ url: string | null; demoMode?: boolean; message?: string }>('/auth/login')
 export const getCurrentUser = () => api.get('/auth/me')
 export const logout = () => api.post('/auth/logout')
 
-// User
+// Uzytkownik
 export const getUserProfile = () => api.get('/user/profile')
 export const updateGenres = (genres: string[]) => api.put('/user/genres', { genres })
 export const updateProfile = (data: { bio?: string; displayName?: string; favoriteGenres?: string[] }) => 
@@ -63,7 +63,7 @@ export const getTopTracks = (timeRange = 'medium_term') => api.get('/spotify/top
 export const getTopArtists = (timeRange = 'medium_term') => api.get('/spotify/top/artists', { params: { timeRange } })
 export const getAvailableGenres = () => api.get('/spotify/genres')
 
-// Reviews
+// Recenzje
 export const createReview = (data: { trackId: string; rating: number; content?: string }) => 
   api.post('/reviews', data)
 export const getMyReviews = (page = 1) => api.get('/reviews/my', { params: { page } })
@@ -71,7 +71,7 @@ export const getTrackReviews = (trackId: string) => api.get(`/reviews/track/${tr
 export const deleteReview = (reviewId: string) => api.delete(`/reviews/${reviewId}`)
 export const getRecentReviews = () => api.get('/reviews')
 
-// Playlists
+// Playlisty
 export const createPlaylist = (data: { name: string; description?: string }) => 
   api.post('/playlists', data)
 export const getMyPlaylists = () => api.get('/playlists/my')
@@ -81,10 +81,11 @@ export const addTrackToPlaylist = (playlistId: string, track: any) =>
 export const syncPlaylistToSpotify = (playlistId: string) => 
   api.post(`/playlists/${playlistId}/sync`)
 
-// Playlist Generator
+// Generator list odtwarzania
 export const getSimilarTracks = (trackId: string) => 
   api.get(`/recommendations/similar/${trackId}`)
 export const discoverGenre = (genre: string) => 
   api.get(`/recommendations/discover/${genre}`)
 
 export default api
+

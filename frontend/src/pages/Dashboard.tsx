@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
@@ -7,8 +7,8 @@ import { Star, TrendingUp, Music, Clock, Hash } from 'lucide-react'
 
 const TIME_RANGES = [
   { value: 'short_term', label: 'Ostatnie 4 tygodnie' },
-  { value: 'medium_term', label: 'Ostatnie 6 miesięcy' },
-  { value: 'long_term', label: 'Wszystkich czasów' },
+  { value: 'medium_term', label: 'Ostatnie 6 miesiÄ™cy' },
+  { value: 'long_term', label: 'Wszystkich czasĂłw' },
 ] as const;
 
 export default function Dashboard() {
@@ -37,23 +37,23 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-8">
-      {/* Welcome Header */}
+      {/* Naglowek powitalny */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-white">
-            Cześć, {user?.displayName || 'Użytkowniku'}! 👋
+            CzeĹ›Ä‡, {user?.displayName || 'UĹĽytkowniku'}! đź‘‹
           </h1>
-          <p className="text-gray-400 mt-1">Oto Twój muzyczny przegląd</p>
+          <p className="text-gray-400 mt-1">Oto TwĂłj muzyczny przeglÄ…d</p>
         </div>
         <Link
           to="/search"
           className="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition"
         >
-          Szukaj utworów
+          Szukaj utworĂłw
         </Link>
       </div>
 
-      {/* Stats Cards */}
+      {/* Karty statystyk */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="bg-gray-900 rounded-xl p-4">
           <div className="flex items-center gap-3">
@@ -73,7 +73,7 @@ export default function Dashboard() {
             </div>
             <div>
               <p className="text-2xl font-bold text-white">{stats?.averageRating?.toFixed(1) || '-'}</p>
-              <p className="text-sm text-gray-400">Śr. ocena</p>
+              <p className="text-sm text-gray-400">Ĺšr. ocena</p>
             </div>
           </div>
         </div>
@@ -84,7 +84,7 @@ export default function Dashboard() {
             </div>
             <div>
               <p className="text-2xl font-bold text-white">{topTracks?.length || 0}</p>
-              <p className="text-sm text-gray-400">Top utworów</p>
+              <p className="text-sm text-gray-400">Top utworĂłw</p>
             </div>
           </div>
         </div>
@@ -95,13 +95,13 @@ export default function Dashboard() {
             </div>
             <div>
               <p className="text-2xl font-bold text-white">{topArtists?.length || 0}</p>
-              <p className="text-sm text-gray-400">Artystów</p>
+              <p className="text-sm text-gray-400">ArtystĂłw</p>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Top Tracks - Numbered List */}
+      {/* Top utwory - lista numerowana */}
       <section>
         <div className="flex items-center justify-between mb-4">
           <div>
@@ -150,21 +150,21 @@ export default function Dashboard() {
                 to={`/track/${track.id}`}
                 className="flex items-center gap-4 bg-gray-900/60 hover:bg-gray-800/80 rounded-lg p-3 transition group"
               >
-                {/* Number */}
+                {/* Numer */}
                 <span className={`w-8 text-center font-bold text-lg ${
                   index < 3 ? 'text-primary-400' : 'text-gray-500'
                 }`}>
                   {index + 1}
                 </span>
 
-                {/* Album Art */}
+                {/* Okladka albumu */}
                 <img
                   src={track.album?.images?.[0]?.url || '/placeholder-album.png'}
                   alt={track.album?.name}
                   className="w-12 h-12 rounded object-cover flex-shrink-0"
                 />
 
-                {/* Track Info */}
+                {/* Dane utworu */}
                 <div className="flex-1 min-w-0">
                   <p className="font-medium text-white truncate group-hover:text-primary-400 transition">
                     {track.name}
@@ -174,7 +174,7 @@ export default function Dashboard() {
                   </p>
                 </div>
 
-                {/* Album Name */}
+                {/* Nazwa albumu */}
                 <p className="text-sm text-gray-500 truncate hidden md:block max-w-[200px]">
                   {track.album?.name}
                 </p>
@@ -185,15 +185,15 @@ export default function Dashboard() {
           <div className="bg-gray-900 rounded-lg p-8 text-center">
             <Music className="w-12 h-12 text-gray-700 mx-auto mb-3" />
             <p className="text-gray-400">Brak danych o top utworach</p>
-            <p className="text-sm text-gray-500 mt-1">Słuchaj więcej na Spotify!</p>
+            <p className="text-sm text-gray-500 mt-1">SĹ‚uchaj wiÄ™cej na Spotify!</p>
           </div>
         )}
       </section>
 
-      {/* Top Artists */}
+      {/* Top artysci */}
       {topArtists && topArtists.length > 0 && (
         <section>
-          <h2 className="text-xl font-semibold text-white mb-1">Twoi ulubieni artyści</h2>
+          <h2 className="text-xl font-semibold text-white mb-1">Twoi ulubieni artyĹ›ci</h2>
           <p className="text-sm text-gray-500 mb-4">
             {TIME_RANGES.find(t => t.value === timeRange)?.label}
           </p>
@@ -219,13 +219,13 @@ export default function Dashboard() {
         </section>
       )}
 
-      {/* Recent Reviews */}
+      {/* Ostatnie recenzje */}
       {reviews?.reviews && reviews.reviews.length > 0 && (
         <section>
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-semibold text-white">Twoje ostatnie recenzje</h2>
             <Link to="/reviews" className="text-primary-400 text-sm hover:text-primary-300">
-              Zobacz wszystkie →
+              Zobacz wszystkie â†’
             </Link>
           </div>
           <div className="space-y-3">
@@ -256,3 +256,4 @@ export default function Dashboard() {
     </div>
   )
 }
+

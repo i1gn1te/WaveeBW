@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useAuth } from '../contexts/AuthContext'
 import { getUserProfile, updateProfile, getAvailableGenres, getUserStats } from '../lib/api'
@@ -9,7 +9,7 @@ export default function Profile() {
   const { user, refetchUser } = useAuth()
   const queryClient = useQueryClient()
   
-  // Edit mode state
+  // Stan trybu edycji
   const [isEditing, setIsEditing] = useState(false)
   const [editDisplayName, setEditDisplayName] = useState('')
   const [editBio, setEditBio] = useState('')
@@ -30,7 +30,7 @@ export default function Profile() {
     queryFn: () => getAvailableGenres().then(res => res.data),
   })
 
-  // Initialize edit values when profile loads
+  // Ustaw pola edycji po zaladowaniu profilu
   useEffect(() => {
     if (profile) {
       setEditDisplayName(profile.displayName || '')
@@ -83,7 +83,7 @@ export default function Profile() {
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
-      {/* Profile Header */}
+      {/* Naglowek profilu */}
       <div className="bg-gray-900 rounded-xl p-6">
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center gap-6">
@@ -104,11 +104,11 @@ export default function Profile() {
                   type="text"
                   value={editDisplayName}
                   onChange={(e) => setEditDisplayName(e.target.value)}
-                  placeholder="Nazwa wyświetlana"
+                  placeholder="Nazwa wyĹ›wietlana"
                   className="text-2xl font-bold text-white bg-gray-800 rounded-lg px-3 py-1 w-full mb-2"
                 />
               ) : (
-                <h1 className="text-2xl font-bold text-white">{user?.displayName || 'Użytkownik'}</h1>
+                <h1 className="text-2xl font-bold text-white">{user?.displayName || 'UĹĽytkownik'}</h1>
               )}
               <p className="text-gray-400">{user?.email}</p>
             </div>
@@ -147,25 +147,25 @@ export default function Profile() {
           )}
         </div>
 
-        {/* Bio Section */}
+        {/* Sekcja bio */}
         <div className="mt-4">
           <label className="text-sm text-gray-400 mb-1 block">O mnie</label>
           {isEditing ? (
             <textarea
               value={editBio}
               onChange={(e) => setEditBio(e.target.value)}
-              placeholder="Napisz coś o sobie i swoich muzycznych gustach..."
+              placeholder="Napisz coĹ› o sobie i swoich muzycznych gustach..."
               rows={3}
               className="w-full bg-gray-800 text-white rounded-lg px-4 py-3 resize-none focus:ring-2 focus:ring-primary-500 focus:outline-none"
             />
           ) : (
             <p className="text-gray-300">
-              {profile?.bio || <span className="text-gray-500 italic">Brak opisu - kliknij "Edytuj profil" aby dodać</span>}
+              {profile?.bio || <span className="text-gray-500 italic">Brak opisu - kliknij "Edytuj profil" aby dodaÄ‡</span>}
             </p>
           )}
         </div>
 
-        {/* Favorite Genres Display */}
+        {/* Widok ulubionych gatunkow */}
         {hasGenres && !isEditing && (
           <div className="mt-4">
             <label className="text-sm text-gray-400 mb-2 block">Ulubione gatunki</label>
@@ -184,7 +184,7 @@ export default function Profile() {
         )}
       </div>
 
-      {/* Genre Selection - only in edit mode OR if no genres selected */}
+      {/* Wybor gatunkow - tylko w edycji lub gdy brak wyboru */}
       {(isEditing || !hasGenres) && (
         <div className="bg-gray-900 rounded-xl p-6">
           <div className="flex items-center justify-between mb-4">
@@ -193,7 +193,7 @@ export default function Profile() {
                 {hasGenres ? 'Edytuj ulubione gatunki' : 'Wybierz ulubione gatunki'}
               </h2>
               <p className="text-sm text-gray-400">
-                Wybierz do 5 gatunków, aby otrzymywać lepsze rekomendacje
+                Wybierz do 5 gatunkĂłw, aby otrzymywaÄ‡ lepsze rekomendacje
               </p>
             </div>
             {!isEditing && !hasGenres && editGenres.length > 0 && (
@@ -207,12 +207,12 @@ export default function Profile() {
                 ) : (
                   <Check className="w-4 h-4" />
                 )}
-                Zapisz wybór
+                Zapisz wybĂłr
               </button>
             )}
           </div>
 
-          {/* Selected Genres Preview */}
+          {/* Podglad wybranych gatunkow */}
           {editGenres.length > 0 && (
             <div className="flex flex-wrap gap-2 mb-4 pb-4 border-b border-gray-800">
               {editGenres.map(genre => (
@@ -226,14 +226,14 @@ export default function Profile() {
                     onClick={() => toggleGenre(genre)}
                     className="hover:text-white"
                   >
-                    ×
+                    Ă—
                   </button>
                 </span>
               ))}
             </div>
           )}
 
-          {/* All Genres */}
+          {/* Wszystkie gatunki */}
           {genres && (
             <div className="flex flex-wrap gap-2">
               {genres.slice(0, 40).map((genre: string) => (
@@ -256,7 +256,7 @@ export default function Profile() {
         </div>
       )}
 
-      {/* Stats */}
+      {/* Statystyki */}
       {stats && (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="bg-gray-900 rounded-xl p-4 text-center">
@@ -270,7 +270,7 @@ export default function Profile() {
                 {stats.averageRating?.toFixed(1) || '-'}
               </p>
             </div>
-            <p className="text-sm text-gray-400">Średnia ocena</p>
+            <p className="text-sm text-gray-400">Ĺšrednia ocena</p>
           </div>
           <div className="bg-gray-900 rounded-xl p-4 text-center">
             <p className="text-3xl font-bold text-white">{profile?._count?.playlists || 0}</p>
@@ -283,17 +283,17 @@ export default function Profile() {
         </div>
       )}
 
-      {/* Rating Distribution */}
+      {/* Rozklad ocen */}
       {stats?.ratingDistribution && stats.totalReviews > 0 && (
         <div className="bg-gray-900 rounded-xl p-6">
-          <h2 className="text-lg font-semibold text-white mb-4">Rozkład ocen</h2>
+          <h2 className="text-lg font-semibold text-white mb-4">RozkĹ‚ad ocen</h2>
           <div className="space-y-2">
             {['5', '4', '3', '2', '1'].map(rating => {
               const count = stats.ratingDistribution[rating] || 0
               const percentage = stats.totalReviews > 0 ? (count / stats.totalReviews) * 100 : 0
               return (
                 <div key={rating} className="flex items-center gap-3">
-                  <span className="text-gray-400 w-8">{rating}★</span>
+                  <span className="text-gray-400 w-8">{rating}â…</span>
                   <div className="flex-1 h-4 bg-gray-800 rounded-full overflow-hidden">
                     <div
                       className="h-full bg-yellow-400 rounded-full"
@@ -311,3 +311,4 @@ export default function Profile() {
     </div>
   )
 }
+

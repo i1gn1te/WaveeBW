@@ -1,4 +1,4 @@
-"use strict";
+﻿"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const auth_js_1 = require("../middleware/auth.js");
@@ -6,9 +6,9 @@ const spotify_js_1 = require("../lib/spotify.js");
 const mockData_js_1 = require("../lib/mockData.js");
 const routeHelpers_js_1 = require("../lib/routeHelpers.js");
 const router = (0, express_1.Router)();
-// ---------------------------------------------------------------------------
-// Search
-// ---------------------------------------------------------------------------
+
+// Wyszukiwanie
+
 router.get('/search', auth_js_1.authMiddleware, async (req, res) => {
     try {
         const { q, limit } = req.query;
@@ -38,9 +38,9 @@ router.get('/search', auth_js_1.authMiddleware, async (req, res) => {
         return (0, routeHelpers_js_1.handleSpotifyRouteError)(res, error, 'Search failed');
     }
 });
-// ---------------------------------------------------------------------------
-// Track details (+ audio features)
-// ---------------------------------------------------------------------------
+
+// Szczegoly utworu (+ cechy audio)
+
 router.get('/track/:trackId', auth_js_1.authMiddleware, async (req, res) => {
     try {
         const { trackId } = req.params;
@@ -53,7 +53,7 @@ router.get('/track/:trackId', auth_js_1.authMiddleware, async (req, res) => {
             });
         }
         const track = await (0, spotify_js_1.getTrack)(req.spotifyAccessToken, trackId);
-        // Audio features may return null (restricted endpoint)
+        // Cechy audio moga byc null (ograniczony adres API)
         const af = await (0, spotify_js_1.getAudioFeatures)(req.spotifyAccessToken, trackId);
         res.json({
             ...track,
@@ -64,9 +64,8 @@ router.get('/track/:trackId', auth_js_1.authMiddleware, async (req, res) => {
         return (0, routeHelpers_js_1.handleSpotifyRouteError)(res, error, 'Failed to get track');
     }
 });
-// ---------------------------------------------------------------------------
-// Audio features only
-// ---------------------------------------------------------------------------
+// Same cechy audio
+
 router.get('/audio-features/:trackId', auth_js_1.authMiddleware, async (req, res) => {
     try {
         const { trackId } = req.params;
@@ -81,9 +80,9 @@ router.get('/audio-features/:trackId', auth_js_1.authMiddleware, async (req, res
         return (0, routeHelpers_js_1.handleSpotifyRouteError)(res, error, 'Failed to get audio features');
     }
 });
-// ---------------------------------------------------------------------------
-// Top tracks / artists
-// ---------------------------------------------------------------------------
+
+// Najlepsze utwory i artysci
+
 router.get('/top/tracks', auth_js_1.authMiddleware, async (req, res) => {
     try {
         if ((0, routeHelpers_js_1.isDemoUser)(req))
@@ -108,15 +107,15 @@ router.get('/top/artists', auth_js_1.authMiddleware, async (req, res) => {
         return (0, routeHelpers_js_1.handleSpotifyRouteError)(res, error, 'Failed to get top artists');
     }
 });
-// ---------------------------------------------------------------------------
-// Genres (static list — old API endpoint was removed)
-// ---------------------------------------------------------------------------
+
+// Gatunki
+
 router.get('/genres', auth_js_1.authMiddleware, async (_req, res) => {
     res.json(spotify_js_1.GENRE_LIST);
 });
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
+
+// Pomocnicze funkcje
+
 function clampLimit(raw, min = 1, max = 50, fallback = 20) {
     if (!raw)
         return fallback;
@@ -126,4 +125,5 @@ function clampLimit(raw, min = 1, max = 50, fallback = 20) {
     return Math.max(min, Math.min(max, n));
 }
 exports.default = router;
-//# sourceMappingURL=spotify.js.map
+
+

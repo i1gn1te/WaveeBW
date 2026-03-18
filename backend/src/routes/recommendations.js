@@ -1,4 +1,4 @@
-"use strict";
+﻿"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const auth_js_1 = require("../middleware/auth.js");
@@ -6,10 +6,8 @@ const spotify_js_1 = require("../lib/spotify.js");
 const mockData_js_1 = require("../lib/mockData.js");
 const routeHelpers_js_1 = require("../lib/routeHelpers.js");
 const router = (0, express_1.Router)();
-// ---------------------------------------------------------------------------
-// Similar tracks (replaces deprecated /recommendations?seed_tracks=)
-// Uses related-artists + artist top tracks
-// ---------------------------------------------------------------------------
+// Podobne utwory (zamiast starej metody rekomendacji)
+// Uzywa related-artists i top utworow artysty
 router.get('/similar/:trackId', auth_js_1.authMiddleware, async (req, res) => {
     try {
         if ((0, routeHelpers_js_1.isDemoUser)(req)) {
@@ -24,10 +22,8 @@ router.get('/similar/:trackId', auth_js_1.authMiddleware, async (req, res) => {
         return (0, routeHelpers_js_1.handleSpotifyRouteError)(res, error, 'Failed to get similar tracks');
     }
 });
-// ---------------------------------------------------------------------------
-// Discover by genre (replaces deprecated /recommendations?seed_genres=)
-// Uses search with genre: filter
-// ---------------------------------------------------------------------------
+// Odkrywanie po gatunku (zamiast starej metody rekomendacji)
+// Uzywa wyszukiwania z filtrem gatunku
 router.get('/discover/:genre', auth_js_1.authMiddleware, async (req, res) => {
     try {
         if ((0, routeHelpers_js_1.isDemoUser)(req)) {
@@ -42,7 +38,6 @@ router.get('/discover/:genre', auth_js_1.authMiddleware, async (req, res) => {
         return (0, routeHelpers_js_1.handleSpotifyRouteError)(res, error, 'Failed to discover genre');
     }
 });
-// ---------------------------------------------------------------------------
 function clampLimit(raw, fallback = 20) {
     if (!raw)
         return fallback;
@@ -53,3 +48,4 @@ function clampLimit(raw, fallback = 20) {
 }
 exports.default = router;
 //# sourceMappingURL=recommendations.js.map
+

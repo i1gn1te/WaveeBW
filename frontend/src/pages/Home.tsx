@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { Loader2, Music, Star, Sparkles, ListMusic, TrendingUp } from 'lucide-react'
@@ -29,11 +29,11 @@ export default function Home() {
         navigate('/dashboard')
       } else {
         const error = await response.json()
-        alert(`Błąd: ${error.error || 'Demo login nie powiódł się'}`)
+        alert(`BĹ‚Ä…d: ${error.error || 'Demo login nie powiĂłdĹ‚ siÄ™'}`)
       }
     } catch (error) {
       console.error('Demo login error:', error)
-      alert('Błąd podczas logowania demo')
+      alert('BĹ‚Ä…d podczas logowania demo')
     } finally {
       setDemoLoading(false)
     }
@@ -41,18 +41,18 @@ export default function Home() {
 
   return (
     <div className="space-y-16">
-      {/* Hero Section */}
+      {/* Sekcja glowna */}
       <section className="text-center py-16">
         <div className="max-w-3xl mx-auto">
           <div className="w-20 h-20 bg-gradient-to-br from-primary-400 to-primary-600 rounded-2xl flex items-center justify-center mx-auto mb-8">
             <Music className="w-10 h-10 text-white" />
           </div>
           <h1 className="text-5xl font-bold text-white mb-6">
-            Odkryj swoją <span className="text-primary-400">muzyczną tożsamość</span>
+            Odkryj swojÄ… <span className="text-primary-400">muzycznÄ… toĹĽsamoĹ›Ä‡</span>
           </h1>
           <p className="text-xl text-gray-400 mb-8">
-            waveeProjectBW to Twój personalny przewodnik po świecie muzyki. 
-            Recenzuj utwory, odkrywaj nowe brzmienia i twórz playlisty dopasowane do Twojego gustu.
+            waveeProjectBW to TwĂłj personalny przewodnik po Ĺ›wiecie muzyki. 
+            Recenzuj utwory, odkrywaj nowe brzmienia i twĂłrz playlisty dopasowane do Twojego gustu.
           </p>
           {!isAuthenticated && (
             <div className="flex flex-col items-center gap-3">
@@ -82,21 +82,21 @@ export default function Home() {
               to="/dashboard"
               className="inline-flex items-center gap-2 px-8 py-4 bg-primary-500 text-white rounded-full text-lg font-semibold hover:bg-primary-600 transition-all hover:scale-105"
             >
-              Przejdź do Dashboard
+              PrzejdĹş do Dashboard
             </Link>
           )}
         </div>
       </section>
 
-      {/* Features */}
+      {/* Funkcje */}
       <section className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
         <div className="bg-gray-900/50 rounded-xl p-6 border border-gray-800 hover:border-primary-500/50 transition">
           <div className="w-12 h-12 bg-yellow-500/20 rounded-lg flex items-center justify-center mb-4">
             <Star className="w-6 h-6 text-yellow-500" />
           </div>
-          <h3 className="text-lg font-semibold text-white mb-2">Recenzuj muzykę</h3>
+          <h3 className="text-lg font-semibold text-white mb-2">Recenzuj muzykÄ™</h3>
           <p className="text-gray-400 text-sm">
-            Oceniaj utwory i dziel się swoimi opiniami jak na Letterboxd - ale dla muzyki!
+            Oceniaj utwory i dziel siÄ™ swoimi opiniami jak na Letterboxd - ale dla muzyki!
           </p>
         </div>
 
@@ -114,9 +114,9 @@ export default function Home() {
           <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center mb-4">
             <TrendingUp className="w-6 h-6 text-blue-500" />
           </div>
-          <h3 className="text-lg font-semibold text-white mb-2">Analiza utworów</h3>
+          <h3 className="text-lg font-semibold text-white mb-2">Analiza utworĂłw</h3>
           <p className="text-gray-400 text-sm">
-            Poznaj tempo, tonację, energię i inne cechy każdego utworu.
+            Poznaj tempo, tonacjÄ™, energiÄ™ i inne cechy kaĹĽdego utworu.
           </p>
         </div>
 
@@ -124,24 +124,24 @@ export default function Home() {
           <div className="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center mb-4">
             <ListMusic className="w-6 h-6 text-green-500" />
           </div>
-          <h3 className="text-lg font-semibold text-white mb-2">Twórz playlisty</h3>
+          <h3 className="text-lg font-semibold text-white mb-2">TwĂłrz playlisty</h3>
           <p className="text-gray-400 text-sm">
-            Buduj playlisty i synchronizuj je bezpośrednio ze Spotify.
+            Buduj playlisty i synchronizuj je bezpoĹ›rednio ze Spotify.
           </p>
         </div>
       </section>
 
-      {/* How it works */}
+      {/* Jak to dziala */}
       <section className="bg-gray-900/30 rounded-2xl p-8 md:p-12">
-        <h2 className="text-3xl font-bold text-white text-center mb-12">Jak to działa?</h2>
+        <h2 className="text-3xl font-bold text-white text-center mb-12">Jak to dziaĹ‚a?</h2>
         <div className="grid md:grid-cols-3 gap-8">
           <div className="text-center">
             <div className="w-12 h-12 bg-primary-500 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">
               1
             </div>
-            <h3 className="text-lg font-semibold text-white mb-2">Połącz ze Spotify</h3>
+            <h3 className="text-lg font-semibold text-white mb-2">PoĹ‚Ä…cz ze Spotify</h3>
             <p className="text-gray-400 text-sm">
-              Zaloguj się przez swoje konto Spotify, aby uzyskać dostęp do swojej biblioteki muzycznej.
+              Zaloguj siÄ™ przez swoje konto Spotify, aby uzyskaÄ‡ dostÄ™p do swojej biblioteki muzycznej.
             </p>
           </div>
           <div className="text-center">
@@ -150,7 +150,7 @@ export default function Home() {
             </div>
             <h3 className="text-lg font-semibold text-white mb-2">Recenzuj i odkrywaj</h3>
             <p className="text-gray-400 text-sm">
-              Oceniaj swoje ulubione utwory i przeglądaj szczegółową analizę każdej piosenki.
+              Oceniaj swoje ulubione utwory i przeglÄ…daj szczegĂłĹ‚owÄ… analizÄ™ kaĹĽdej piosenki.
             </p>
           </div>
           <div className="text-center">
@@ -159,7 +159,7 @@ export default function Home() {
             </div>
             <h3 className="text-lg font-semibold text-white mb-2">Otrzymuj rekomendacje</h3>
             <p className="text-gray-400 text-sm">
-              Na podstawie Twoich recenzji otrzymujesz spersonalizowane propozycje nowych utworów.
+              Na podstawie Twoich recenzji otrzymujesz spersonalizowane propozycje nowych utworĂłw.
             </p>
           </div>
         </div>
@@ -167,3 +167,4 @@ export default function Home() {
     </div>
   )
 }
+

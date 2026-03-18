@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>waveeReady - Dokumentacja Kodu (Backend + Frontend)</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #121a2f;
+      --panel-2: #1a2542;
+      --text: #ecf2ff;
+      --muted: #b5c1e6;
+      --accent: #31d17b;
+      --accent-2: #59a6ff;
+      --warning: #ffd166;
+      --border: #2d3b66;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Trebuchet MS", Arial, sans-serif;
+      background:
+        radial-gradient(1200px 500px at 20% -10%, #20305f 0%, transparent 70%),
+        radial-gradient(900px 500px at 100% 0%, #1a4f5f 0%, transparent 60%),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .wrap {
+      width: min(1200px, 94vw);
+      margin: 0 auto;
+      padding: 24px 0 60px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #182549, #0f2038);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+      margin-bottom: 24px;
+    }
+
+    h1, h2, h3 { margin-top: 0; }
+
+    h1 {
+      font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+      margin-bottom: 12px;
+    }
+
+    h2 {
+      font-size: clamp(1.2rem, 2.2vw, 1.7rem);
+      margin: 28px 0 14px;
+      color: var(--accent);
+      border-left: 5px solid var(--accent);
+      padding-left: 10px;
+    }
+
+    h3 {
+      font-size: 1.05rem;
+      margin-bottom: 10px;
+      color: var(--accent-2);
+    }
+
+    p { margin: 0 0 10px; color: var(--text); }
+
+    .muted { color: var(--muted); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+    }
+
+    .card .path {
+      display: inline-block;
+      background: #0a1329;
+      border: 1px solid #31406e;
+      padding: 4px 8px;
+      border-radius: 8px;
+      color: #dbe7ff;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 0.86rem;
+      margin-bottom: 10px;
+      word-break: break-all;
+    }
+
+    ul {
+      margin: 8px 0 0;
+      padding-left: 18px;
+    }
+
+    li { margin-bottom: 6px; }
+
+    .note {
+      border-left: 4px solid var(--warning);
+      background: #2d2a1d;
+      color: #fff4c9;
+      padding: 10px 12px;
+      border-radius: 8px;
+      margin-top: 8px;
+    }
+
+    .toc {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    }
+
+    .toc a {
+      display: block;
+      text-decoration: none;
+      color: var(--text);
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px;
+    }
+
+    .toc a:hover { border-color: var(--accent-2); }
+
+    .small { font-size: 0.92rem; color: var(--muted); }
+
+    @media (max-width: 720px) {
+      .wrap { width: min(96vw, 1200px); }
+      .hero, .card { padding: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <h1>waveeReady - Bardzo Szczegolowa Dokumentacja Kodu</h1>
+      <p class="muted">Dokumentacja opisuje pliki po kolei: najpierw backend, potem frontend. Jezyk jest celowo prosty, z naciskiem na to <strong>co robi plik</strong>, <strong>jak dziala</strong> i <strong>co jest trudniejsze do zrozumienia</strong>.</p>
+      <div class="note">
+        Ta dokumentacja dotyczy plikow projektowych aplikacji. Nie opisuje setek plikow z <strong>node_modules</strong>, bo to biblioteki zewnetrzne.
+      </div>
+    </section>
+
+    <section class="card">
+      <h3>Spis tresci</h3>
+      <div class="toc">
+        <a href="#architektura">1. Jak dziala caly projekt</a>
+        <a href="#backend">2. Backend - plik po pliku</a>
+        <a href="#frontend">3. Frontend - plik po pliku</a>
+        <a href="#trudne">4. Najtrudniejsze mechanizmy</a>
+      </div>
+    </section>
+
+    <h2 id="architektura">1. Jak dziala caly projekt</h2>
+    <section class="card">
+      <p><strong>waveeReady</strong> to aplikacja webowa oparta na modelu:</p>
+      <ul>
+        <li><strong>Frontend (React + Vite + Tailwind)</strong> - pokazuje interfejs, pobiera dane z API, obsluguje logowanie i nawigacje.</li>
+        <li><strong>Backend (Express + Prisma)</strong> - udostepnia endpointy REST, komunikuje sie ze Spotify API i baza danych.</li>
+        <li><strong>Baza danych (Prisma schema + PostgreSQL)</strong> - zapisuje uzytkownikow, recenzje, playlisty i utwory polubione.</li>
+      </ul>
+      <p class="small">Przeplyw: uzytkownik loguje sie (Spotify albo demo) - frontend dostaje sesje przez cookie - frontend wywoluje API - backend sprawdza token - backend czyta/zapisuje dane i ewentualnie pyta Spotify.</p>
+    </section>
+
+    <h2 id="backend">2. Backend - plik po pliku</h2>
+
+    <section class="grid">
+      <article class="card">
+        <div class="path">backend/package.json</div>
+        <p><strong>Rola:</strong> konfiguracja projektu backendowego Node.js.</p>
+        <ul>
+          <li>Definiuje skrypty: uruchamianie serwera, tryb dev, komendy Prisma.</li>
+          <li>Trzyma zaleznosci: Express, Prisma, axios, JWT, Zod, CORS, cookie-parser.</li>
+          <li>Ustawia <strong>type: commonjs</strong> (moduly CJS).</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="path">backend/prisma/schema.prisma</div>
+        <p><strong>Rola:</strong> model danych aplikacji.</p>
+        <ul>
+          <li><strong>User</strong>: profil uzytkownika i ulubione gatunki.</li>
+          <li><strong>Review</strong>: recenzja utworu (ocena + tekst + cechy audio).</li>
+          <li><strong>Playlist</strong> i <strong>PlaylistTrack</strong>: playlisty lokalne i utwory na listach.</li>
+          <li><strong>LikedTrack</strong>: polubione utwory z dodatkowymi cechami.</li>
+          <li>Kluczowe ograniczenia: unikalnosc recenzji (userId + trackId), unikalnosc utworu w playliscie.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="path">backend/src/index.js</div>
+        <p><strong>Rola:</strong> punkt startowy API.</p>
+        <ul>
+          <li>Tworzy aplikacje Express.</li>
+          <li>Konfiguruje CORS (localhost + siec lokalna).</li>
+          <li>Wlacza JSON parser i cookie-parser.</li>
+          <li>Podpina trasy: auth, user, reviews, spotify, playlists, recommendations.</li>
+          <li>Dodaje health-check i globalny error handler.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="path">backend/src/lib/prisma.js</div>
+        <p><strong>Rola:</strong> singleton klienta Prisma.</p>
+        <ul>
+          <li>Tworzy jedno polaczenie klienta Prisma.</li>
+          <li>W dev zapisuje klienta w globalThis, zeby uniknac wielu instancji po hot-reload.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="path">backend/src/lib/mockData.js</div>
+        <p><strong>Rola:</strong> dane testowe dla trybu demo bez Spotify.</p>
+        <ul>
+          <li>Tablice mock utworow i artystow (z obrazkami albumow).</li>
+          <li>Mapa mock cech audio (tempo, energia, valence itd.).</li>
+          <li>Lista gatunkow oraz funkcja zamiany numeru tonacji na nazwe.</li>
+        </ul>
+        <p class="small">To dzieki temu aplikacja dziala nawet, gdy Spotify API nie jest skonfigurowane.</p>
+      </article>
+
+      <article class="card">
+        <div class="path">backend/src/lib/routeHelpers.js</div>
+        <p><strong>Rola:</strong> wspolne helpery dla tras.</p>
+        <ul>
+          <li><strong>handleSpotifyRouteError</strong>: mapuje bledy Axios/Spotify na sensowne odpowiedzi HTTP.</li>
+          <li><strong>isDemoUser</strong>: rozpoznaje token demo.</li>
+          <li><strong>shuffleArray</strong>: losowe mieszanie tablicy.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="path">backend/src/lib/spotify.js</div>
+        <p><strong>Rola:</strong> warstwa integracji ze Spotify API.</p>
+        <ul>
+          <li>OAuth: generowanie URL logowania, wymiana code - token, odswiezanie tokenu.</li>
+          <li>Pobieranie danych: profil usera, top tracks/artists, szukanie utworow, dane utworu, audio features.</li>
+          <li>Rekomendacje bez starego endpointu: "podobne" przez related artists i ich top tracks.</li>
+          <li>Discovery po gatunku: wyszukiwanie zapytaniem "genre:...".</li>
+          <li>Playlisty: tworzenie playlisty i dodawanie utworow po URI.</li>
+        </ul>
+        <p class="note"><strong>Wazne:</strong> audio-features endpoint Spotify bywa ograniczony. Kod obsluguje to i zwraca null zamiast twardego bledu.</p>
+      </article>
+
+      <article class="card">
+        <div class="path">backend/src/middleware/auth.js</div>
+        <p><strong>Rola:</strong> ochrona endpointow i automatyczne odswiezanie sesji.</p>
+        <ul>
+          <li>Sprawdza token JWT z cookie albo naglowka Authorization.</li>
+          <li>Po poprawnej walidacji ustawia req.userId i req.spotifyAccessToken.</li>
+          <li>Jesli token wygasl, probuje odswiezyc access token przez spotifyRefreshToken.</li>
+          <li>Po odswiezeniu ustawia nowe cookie i przepuszcza dalej.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="path">backend/src/routes/auth.js</div>
+        <p><strong>Rola:</strong> caly system logowania i sesji.</p>
+        <ul>
+          <li><strong>/register</strong> i <strong>/local-login</strong>: lokalne konto email + haslo (hash scrypt + salt).</li>
+          <li><strong>/login</strong>: zwraca URL do logowania Spotify.</li>
+          <li><strong>/demo-login</strong>: szybkie logowanie testowe.</li>
+          <li><strong>/callback</strong>: obsluga OAuth callback, pobranie profilu Spotify, upsert usera, JWT cookie, redirect do dashboardu.</li>
+          <li><strong>/me</strong>, <strong>/refresh</strong>, <strong>/logout</strong>: zarzadzanie sesja i profilem.</li>
+        </ul>
+        <p class="small">Kod callback ma dodatkowa ochrone przed ponownym uzyciem tego samego code (Set processedCodes).</p>
+      </article>
+
+      <article class="card">
+        <div class="path">backend/src/routes/user.js</div>
+        <p><strong>Rola:</strong> profil i statystyki uzytkownikow.</p>
+        <ul>
+          <li>Pobieranie i edycja profilu (bio, displayName, favoriteGenres).</li>
+          <li>Statystyki recenzji (srednia, rozklad ocen).</li>
+          <li>Wyszukiwarka innych userow (bez demo_user).</li>
+          <li>Publiczny profil innego usera po userId.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="path">backend/src/routes/reviews.js</div>
+        <p><strong>Rola:</strong> CRUD recenzji i feed recenzji.</p>
+        <ul>
+          <li><strong>POST /</strong>: tworzy lub nadpisuje recenzje tego samego utworu przez upsert.</li>
+          <li>W trybie Spotify pobiera dane utworu i cechy audio; w demo bierze mocki.</li>
+          <li><strong>/my</strong>, <strong>/track/:trackId</strong>, <strong>/:reviewId</strong>, <strong>DELETE</strong>, oraz feed globalny.</li>
+          <li>Jest paginacja i podstawowe sortowanie.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="path">backend/src/routes/spotify.js</div>
+        <p><strong>Rola:</strong> endpointy stricte "muzyczne" pod frontend.</p>
+        <ul>
+          <li>Wyszukiwarka utworow z limitem i fallbackiem demo.</li>
+          <li>Szczegoly utworu + audio features.</li>
+          <li>Top tracks, top artists i lista gatunkow.</li>
+          <li>Clamp limitu, zeby unikac skrajnych wartosci.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="path">backend/src/routes/playlists.js</div>
+        <p><strong>Rola:</strong> lokalne playlisty i synchronizacja do Spotify.</p>
+        <ul>
+          <li>Tworzenie playlisty, pobieranie swoich i pojedynczej playlisty.</li>
+          <li>Dodawanie/usuwanie utworow z kontrola wlasciciela.</li>
+          <li><strong>/sync</strong>: tworzy playliste na Spotify i wrzuca track URI.</li>
+          <li>Usuwanie playlisty.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="path">backend/src/routes/recommendations.js</div>
+        <p><strong>Rola:</strong> rekomendacje i odkrywanie muzyki.</p>
+        <ul>
+          <li><strong>/similar/:trackId</strong>: utwory podobne do podanego tracka.</li>
+          <li><strong>/discover/:genre</strong>: odkrywanie po gatunku.</li>
+          <li>W demo zwraca losowo wymieszane mockTracks.</li>
+        </ul>
+      </article>
+    </section>
+
+    <h2 id="frontend">3. Frontend - plik po pliku</h2>
+
+    <section class="grid">
+      <article class="card">
+        <div class="path">frontend/package.json</div>
+        <p><strong>Rola:</strong> konfiguracja aplikacji React/Vite.</p>
+        <ul>
+          <li>Skrypty: dev, build, preview, lint.</li>
+          <li>Zaleznosci UI i data: React, React Router, React Query, axios, Tailwind.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="path">frontend/index.html</div>
+        <p><strong>Rola:</strong> glowny HTML hostujacy aplikacje SPA.</p>
+        <ul>
+          <li>Zawiera root div, do ktorego montuje sie React.</li>
+          <li>Laduje font i startowy skrypt /src/main.tsx.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="path">frontend/eslint.config.js</div>
+        <p><strong>Rola:</strong> zasady jakosci kodu.</p>
+        <ul>
+          <li>Konfiguracja ESLint dla TypeScript + React hooks.</li>
+          <li>Poluznia regule no-explicit-any (w projekcie jest sporo any).</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="path">frontend/postcss.config.js</div>
+        <p><strong>Rola:</strong> pipeline CSS (Tailwind + Autoprefixer).</p>
+      </article>
+
+      <article class="card">
+        <div class="path">frontend/tailwind.config.js</div>
+        <p><strong>Rola:</strong> konfiguracja Tailwind.</p>
+        <ul>
+          <li>Definiuje skanowane pliki.</li>
+          <li>Rozszerza palete o kolory primary i spotify.</li>
+          <li>Ustawia font sans na Inter.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="path">frontend/tsconfig.json</div>
+        <p><strong>Rola:</strong> glowna konfiguracja TypeScript dla aplikacji.</p>
+        <ul>
+          <li>Strict mode, brak emit, alias <strong>@/</strong> do src.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="path">frontend/tsconfig.node.json</div>
+        <p><strong>Rola:</strong> TS config dla plikow narzedziowych (glownie vite.config.ts).</p>
+      </article>
+
+      <article class="card">
+        <div class="path">frontend/vite.config.ts</div>
+        <p><strong>Rola:</strong> konfiguracja dev serwera i bundlera.</p>
+        <ul>
+          <li>Plugin React.</li>
+          <li>Alias <strong>@</strong> - src.</li>
+          <li>Proxy <strong>/api</strong> - backend na 127.0.0.1:3001.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="path">frontend/vite.config.js</div>
+        <p><strong>Rola:</strong> wersja JS konfiguracji Vite (prawdopodobnie wygenerowana/transpilowana).</p>
+      </article>
+
+      <article class="card">
+        <div class="path">frontend/vite.config.d.ts</div>
+        <p><strong>Rola:</strong> deklaracja typow dla configu Vite.</p>
+      </article>
+
+      <article class="card">
+        <div class="path">frontend/src/main.tsx</div>
+        <p><strong>Rola:</strong> punkt startowy React.</p>
+        <ul>
+          <li>Tworzy QueryClient (cache, staleTime, retry).</li>
+          <li>Opakowuje aplikacje w QueryClientProvider.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="path">frontend/src/index.css</div>
+        <p><strong>Rola:</strong> globalne style + inicjalizacja Tailwind.</p>
+        <ul>
+          <li>Tlo, kolor tekstu, wyglad scrollbara.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="path">frontend/src/App.tsx</div>
+        <p><strong>Rola:</strong> glowny router aplikacji.</p>
+        <ul>
+          <li>Definiuje wszystkie sciezki i strony.</li>
+          <li>Chroni prywatne trasy przez ProtectedRoute.</li>
+          <li>Opakowuje wszystko w AuthProvider.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="path">frontend/src/contexts/AuthContext.tsx</div>
+        <p><strong>Rola:</strong> centralny stan logowania.</p>
+        <ul>
+          <li>Trzyma usera, loading i status isAuthenticated.</li>
+          <li>Przy starcie robi fetch /auth/me.</li>
+          <li>Logout czysci sesje i caly cache React Query.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="path">frontend/src/lib/api.ts</div>
+        <p><strong>Rola:</strong> klient HTTP i wszystkie funkcje API.</p>
+        <ul>
+          <li>Axios z baseURL /api i withCredentials.</li>
+          <li>Interceptor 401: probuje /auth/refresh i ponawia zapytanie.</li>
+          <li>Eksportuje funkcje do auth, user, spotify, reviews, playlists, recommendations.</li>
+        </ul>
+        <p class="note">To serce komunikacji frontend-backend. Jesli cos "nie dochodzi", zwykle problem jest tutaj albo w backend route.</p>
+      </article>
+
+      <article class="card">
+        <div class="path">frontend/src/lib/utils.ts</div>
+        <p><strong>Rola:</strong> male helpery.</p>
+        <ul>
+          <li><strong>cn()</strong>: laczenie klas CSS (clsx + tailwind-merge).</li>
+          <li><strong>formatDuration()</strong>: ms - mm:ss.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="path">frontend/src/components/Layout.tsx</div>
+        <p><strong>Rola:</strong> globalny szkielet UI.</p>
+        <ul>
+          <li>Navbar desktop/mobile, menu usera, przycisk logout.</li>
+          <li>Wyswietla Outlet (aktywny widok) i footer.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="path">frontend/src/components/ProtectedRoute.tsx</div>
+        <p><strong>Rola:</strong> ochrona stron wymagajacych logowania.</p>
+        <ul>
+          <li>Pokazuje loader podczas sprawdzania sesji.</li>
+          <li>Niezalogowanego przekierowuje na /login.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="path">frontend/src/components/StarRating.tsx</div>
+        <p><strong>Rola:</strong> widget ocen gwiazdkami (takze 0.5).</p>
+        <ul>
+          <li>Tryb readonly albo interaktywny.</li>
+          <li>Polowki gwiazdek sa realizowane nakladka pol-ikony.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="path">frontend/src/components/TrackCard.tsx</div>
+        <p><strong>Rola:</strong> karta utworu z okladka i przejsciem do szczegolow.</p>
+      </article>
+
+      <article class="card">
+        <div class="path">frontend/src/components/AudioFeaturesDisplay.tsx</div>
+        <p><strong>Rola:</strong> czytelna wizualizacja cech audio utworu.</p>
+        <ul>
+          <li>Pokazuje BPM, tonacje, glosnosc i paski cech procentowych.</li>
+          <li>Filtruje prawie zerowe wartosci, zeby UI nie byl "zaszumiony".</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="path">frontend/src/pages/Home.tsx</div>
+        <p><strong>Rola:</strong> landing page produktu.</p>
+        <ul>
+          <li>Opisuje funkcje aplikacji i flow "jak to dziala".</li>
+          <li>Ma logowanie Spotify i logowanie demo.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="path">frontend/src/pages/Login.tsx</div>
+        <p><strong>Rola:</strong> ekran logowania.</p>
+        <ul>
+          <li>Pobiera URL logowania Spotify z backendu.</li>
+          <li>Obsluguje callback errors z query string.</li>
+          <li>Umie zalogowac usera demo.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="path">frontend/src/pages/Dashboard.tsx</div>
+        <p><strong>Rola:</strong> panel glowny zalogowanego usera.</p>
+        <ul>
+          <li>Top tracks/top artists dla zakresu czasu.</li>
+          <li>Karty statystyk i ostatnie recenzje.</li>
+          <li>Linki do dalszych akcji (np. search, reviews).</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="path">frontend/src/pages/Search.tsx</div>
+        <p><strong>Rola:</strong> wyszukiwarka utworow.</p>
+        <ul>
+          <li>Formularz + useQuery dla zapytania.</li>
+          <li>Stany: loading, brak wynikow, blad, lista wynikow.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="path">frontend/src/pages/Track.tsx</div>
+        <p><strong>Rola:</strong> szczegoly jednego utworu.</p>
+        <ul>
+          <li>Dane utworu, cechy audio, srednia ocen, lista recenzji.</li>
+          <li>Formularz dodawania recenzji.</li>
+          <li>Pokazuje podobne utwory.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="path">frontend/src/pages/Reviews.tsx</div>
+        <p><strong>Rola:</strong> lista recenzji aktualnego usera.</p>
+        <ul>
+          <li>Wyswietla recenzje z mini statystykami.</li>
+          <li>Pozwala usuwac recenzje.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="path">frontend/src/pages/PlaylistGenerator.tsx</div>
+        <p><strong>Rola:</strong> generator playlist dynamicznych.</p>
+        <ul>
+          <li>Dwa tryby: po gatunkach albo po wybranym utworze.</li>
+          <li>Buduje playliste i trzyma pule backup trackow.</li>
+          <li>Mozna usuwac utwory, tasowac i dogenerowac kolejne.</li>
+        </ul>
+        <p class="note"><strong>Trudniejsza logika:</strong> stan jest rozbity na displayedPlaylist i backupTracks, dzieki czemu po usunieciu elementu mozna natychmiast podmienic go nowym bez kolejnego pelnego generowania.</p>
+      </article>
+
+      <article class="card">
+        <div class="path">frontend/src/pages/Profile.tsx</div>
+        <p><strong>Rola:</strong> profil usera i jego edycja.</p>
+        <ul>
+          <li>Tryb podglad i tryb edycji (displayName, bio, gatunki).</li>
+          <li>Statystyki i rozklad ocen.</li>
+          <li>Synchronizacja danych z AuthContext po zapisie.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="path">frontend/src/pages/Community.tsx</div>
+        <p><strong>Rola:</strong> modul spolecznosci.</p>
+        <ul>
+          <li>Wyszukuje innych userow (po nazwie/email).</li>
+          <li>Pokazuje publiczny profil i jego recenzje.</li>
+          <li>Dla demo usera funkcja jest celowo zablokowana.</li>
+        </ul>
+      </article>
+    </section>
+
+    <h2 id="trudne">4. Najtrudniejsze mechanizmy - proste wyjasnienie</h2>
+
+    <section class="card">
+      <h3>A) Tokeny i sesja (backend + frontend)</h3>
+      <ul>
+        <li>Backend zapisuje JWT w cookie po logowaniu.</li>
+        <li>Middleware sprawdza token dla chronionych tras.</li>
+        <li>Jesli access token wygasl, middleware lub interceptor frontendu uruchamia odswiezanie.</li>
+        <li>Dzieki temu user czesto nawet nie widzi, ze sesja byla odnawiana.</li>
+      </ul>
+
+      <h3>B) Dlaczego sa tryby Spotify i Demo</h3>
+      <ul>
+        <li>Gdy Spotify API nie jest skonfigurowane, app dalej ma dzialac.</li>
+        <li>Wtedy backend zwraca mockowe utwory i cechy audio.</li>
+      </ul>
+
+      <h3>C) Upsert recenzji</h3>
+      <ul>
+        <li>Nie ma duplikatow recenzji tego samego utworu przez tego samego usera.</li>
+        <li>Kolejne zapisanie recenzji tego tracka po prostu aktualizuje poprzednia.</li>
+      </ul>
+
+      <h3>D) Rekomendacje po zmianach Spotify API</h3>
+      <ul>
+        <li>Stary endpoint recommendations zostal ograniczony/usuniety dla czesci zastosowan.</li>
+        <li>Projekt obchodzi to przez: podobni artysci -> ich top utwory -> mieszanie i deduplikacja.</li>
+      </ul>
+
+      <h3>E) Dlaczego w kodzie jest duzo "invalidates" i "clear cache"</h3>
+      <ul>
+        <li>React Query trzyma cache danych.</li>
+        <li>Po mutacji (np. dodanie recenzji) trzeba odswiezyc konkretne query, zeby UI pokazal aktualny stan.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h3>Podsumowanie dla Ciebie (jak odpowiadac na pytania)</h3>
+      <ul>
+        <li>Jesli pytanie dotyczy "gdzie jest logowanie" -> auth route + auth middleware + AuthContext + Login/Home.</li>
+        <li>Jesli pytanie dotyczy "skad sa rekomendacje" -> recommendations route + spotify lib (findSimilarTracks / discoverByGenre).</li>
+        <li>Jesli pytanie dotyczy "gdzie sa recenzje" -> reviews route + Track page + Reviews page + schema model Review.</li>
+        <li>Jesli pytanie dotyczy "playlista" -> playlists route + PlaylistGenerator page.</li>
+        <li>Jesli pytanie dotyczy "czemu cos nie dziala" -> najpierw api.ts (frontend), potem odpowiadajacy route w backendzie.</li>
+      </ul>
+    </section>
+  </div>
+</body>
+</html>

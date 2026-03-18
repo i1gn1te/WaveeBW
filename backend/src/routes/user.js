@@ -1,11 +1,11 @@
-"use strict";
+﻿"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const prisma_js_1 = require("../lib/prisma.js");
 const auth_js_1 = require("../middleware/auth.js");
 const routeHelpers_js_1 = require("../lib/routeHelpers.js");
 const router = (0, express_1.Router)();
-// Get user profile
+// Pobierz profil usera
 router.get('/profile', auth_js_1.authMiddleware, async (req, res) => {
     try {
         const user = await prisma_js_1.prisma.user.findUnique({
@@ -34,7 +34,7 @@ router.get('/profile', auth_js_1.authMiddleware, async (req, res) => {
         res.status(500).json({ error: 'Failed to get profile' });
     }
 });
-// Update favorite genres
+// Zmien ulubione gatunki
 router.put('/genres', auth_js_1.authMiddleware, async (req, res) => {
     try {
         const { genres } = req.body;
@@ -52,7 +52,7 @@ router.put('/genres', auth_js_1.authMiddleware, async (req, res) => {
         res.status(500).json({ error: 'Failed to update genres' });
     }
 });
-// Update user profile (bio, displayName, genres)
+// Zmien profil usera (bio, nazwa, gatunki)
 router.put('/profile', auth_js_1.authMiddleware, async (req, res) => {
     try {
         const { bio, displayName, favoriteGenres } = req.body;
@@ -75,7 +75,7 @@ router.put('/profile', auth_js_1.authMiddleware, async (req, res) => {
         res.status(500).json({ error: 'Failed to update profile' });
     }
 });
-// Get user's review stats
+// Pobierz statystyki recenzji usera
 router.get('/stats', auth_js_1.authMiddleware, async (req, res) => {
     try {
         const reviews = await prisma_js_1.prisma.review.findMany({
@@ -105,7 +105,7 @@ router.get('/stats', auth_js_1.authMiddleware, async (req, res) => {
 router.get('/search', auth_js_1.authMiddleware, async (req, res) => {
     try {
         if ((0, routeHelpers_js_1.isDemoUser)(req)) {
-            return res.status(403).json({ error: 'Funkcja dostępna tylko przy logowaniu przez Spotify' });
+            return res.status(403).json({ error: 'Funkcja dostÄ™pna tylko przy logowaniu przez Spotify' });
         }
         const q = typeof req.query.q === 'string' ? req.query.q.trim() : '';
         if (q.length < 2) {
@@ -138,7 +138,7 @@ router.get('/search', auth_js_1.authMiddleware, async (req, res) => {
         return res.status(500).json({ error: 'Failed to search users' });
     }
 });
-// Get public user profile
+// Pobierz publiczny profil usera
 router.get('/:userId', async (req, res) => {
     try {
         const user = await prisma_js_1.prisma.user.findUnique({
@@ -169,4 +169,5 @@ router.get('/:userId', async (req, res) => {
     }
 });
 exports.default = router;
-//# sourceMappingURL=user.js.map
+
+

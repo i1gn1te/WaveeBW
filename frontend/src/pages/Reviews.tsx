@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+﻿import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
 import { getMyReviews, deleteReview } from '../lib/api'
 import StarRating from '../components/StarRating'
@@ -35,19 +35,19 @@ export default function Reviews() {
         <h1 className="text-3xl font-bold text-white mb-2">Twoje recenzje</h1>
         <p className="text-gray-400">
           {reviews.length > 0
-            ? `Masz ${reviews.length} ${reviews.length === 1 ? 'recenzję' : reviews.length < 5 ? 'recenzje' : 'recenzji'}`
-            : 'Nie masz jeszcze żadnych recenzji'}
+            ? `Masz ${reviews.length} ${reviews.length === 1 ? 'recenzjÄ™' : reviews.length < 5 ? 'recenzje' : 'recenzji'}`
+            : 'Nie masz jeszcze ĹĽadnych recenzji'}
         </p>
       </div>
 
       {reviews.length === 0 ? (
         <div className="text-center py-12 bg-gray-900 rounded-xl">
-          <p className="text-gray-400 mb-4">Zacznij recenzować muzykę!</p>
+          <p className="text-gray-400 mb-4">Zacznij recenzowaÄ‡ muzykÄ™!</p>
           <Link
             to="/search"
             className="inline-block px-6 py-3 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition"
           >
-            Szukaj utworów
+            Szukaj utworĂłw
           </Link>
         </div>
       ) : (
@@ -57,7 +57,7 @@ export default function Reviews() {
               key={review.id}
               className="bg-gray-900 rounded-xl p-4 md:p-6 flex flex-col md:flex-row gap-4"
             >
-              {/* Album Art */}
+              {/* Okladka albumu */}
               <Link to={`/track/${review.trackId}`} className="flex-shrink-0">
                 {review.albumArt ? (
                   <img
@@ -78,7 +78,7 @@ export default function Reviews() {
                 </div>
               </Link>
 
-              {/* Review Content */}
+              {/* Tresc recenzji */}
               <div className="flex-1 min-w-0">
                 <Link to={`/track/${review.trackId}`}>
                   <h3 className="text-lg font-semibold text-white hover:text-primary-400 transition truncate">
@@ -95,7 +95,7 @@ export default function Reviews() {
                   <p className="text-gray-300 text-sm line-clamp-2">{review.content}</p>
                 )}
 
-                {/* Audio Features Tags */}
+                {/* Tagi cech audio */}
                 {review.tempo && (
                   <div className="flex flex-wrap gap-2 mt-3">
                     <span className="px-2 py-1 bg-gray-800 text-gray-400 text-xs rounded">
@@ -108,20 +108,20 @@ export default function Reviews() {
                     )}
                     {review.danceability && (
                       <span className="px-2 py-1 bg-gray-800 text-gray-400 text-xs rounded">
-                        Taneczność: {Math.round(review.danceability * 100)}%
+                        TanecznoĹ›Ä‡: {Math.round(review.danceability * 100)}%
                       </span>
                     )}
                   </div>
                 )}
               </div>
 
-              {/* Actions */}
+              {/* Akcje */}
               <div className="flex md:flex-col items-center gap-2">
                 <button
                   onClick={() => deleteMutation.mutate(review.id)}
                   disabled={deleteMutation.isPending}
                   className="p-2 text-gray-400 hover:text-red-500 transition"
-                  title="Usuń recenzję"
+                  title="UsuĹ„ recenzjÄ™"
                 >
                   <Trash2 className="w-5 h-5" />
                 </button>
@@ -133,3 +133,4 @@ export default function Reviews() {
     </div>
   )
 }
+

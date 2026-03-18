@@ -1,4 +1,4 @@
-import { Star } from 'lucide-react'
+﻿import { Star } from 'lucide-react'
 import { cn } from '../lib/utils'
 
 interface StarRatingProps {
@@ -19,7 +19,7 @@ export default function StarRating({ rating, onChange, readonly = false, size = 
 
   const handleClick = (value: number) => {
     if (!readonly && onChange) {
-      // Allow half stars
+      // Pozwalaj na pol gwiazdki
       if (rating === value) {
         onChange(value - 0.5)
       } else {
@@ -64,3 +64,4 @@ export default function StarRating({ rating, onChange, readonly = false, size = 
     </div>
   )
 }
+

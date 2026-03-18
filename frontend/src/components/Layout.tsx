@@ -1,4 +1,4 @@
-import { Outlet, Link, useNavigate } from 'react-router-dom'
+﻿import { Outlet, Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { Music, Search, Star, ListMusic, User, LogOut, Menu, X, Users } from 'lucide-react'
 import { useState } from 'react'
@@ -15,7 +15,7 @@ export default function Layout() {
 
   return (
     <div className="min-h-screen bg-gray-950">
-      {/* Navigation */}
+      {/* Nawigacja */}
       <nav className="sticky top-0 z-50 bg-gray-900/80 backdrop-blur-lg border-b border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
@@ -27,7 +27,7 @@ export default function Layout() {
               <span className="text-xl font-bold text-white">waveeProjectBW</span>
             </Link>
 
-            {/* Desktop Navigation */}
+            {/* Nawigacja desktop */}
             {isAuthenticated && (
               <div className="hidden md:flex items-center gap-6">
                 <Link to="/dashboard" className="text-gray-300 hover:text-white transition flex items-center gap-2">
@@ -48,12 +48,12 @@ export default function Layout() {
                 </Link>
                 <Link to="/community" className="text-gray-300 hover:text-white transition flex items-center gap-2">
                   <Users className="w-4 h-4" />
-                  Społeczność
+                  SpoĹ‚ecznoĹ›Ä‡
                 </Link>
               </div>
             )}
 
-            {/* User Menu */}
+            {/* Menu usera */}
             <div className="flex items-center gap-4">
               {isAuthenticated ? (
                 <>
@@ -72,7 +72,7 @@ export default function Layout() {
                     <LogOut className="w-4 h-4" />
                   </button>
                   
-                  {/* Mobile menu button */}
+                  {/* Przycisk menu mobile */}
                   <button
                     onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                     className="md:hidden text-gray-300"
@@ -92,7 +92,7 @@ export default function Layout() {
           </div>
         </div>
 
-        {/* Mobile menu */}
+        {/* Menu mobile */}
         {mobileMenuOpen && isAuthenticated && (
           <div className="md:hidden bg-gray-900 border-t border-gray-800">
             <div className="px-4 py-4 space-y-3">
@@ -109,7 +109,7 @@ export default function Layout() {
                 Generator
               </Link>
               <Link to="/community" className="block text-gray-300 hover:text-white" onClick={() => setMobileMenuOpen(false)}>
-                Społeczność
+                SpoĹ‚ecznoĹ›Ä‡
               </Link>
               <Link to="/profile" className="block text-gray-300 hover:text-white" onClick={() => setMobileMenuOpen(false)}>
                 Profil
@@ -122,18 +122,19 @@ export default function Layout() {
         )}
       </nav>
 
-      {/* Main Content */}
+      {/* Glowna tresc */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Outlet />
       </main>
 
-      {/* Footer */}
+      {/* Stopka */}
       <footer className="border-t border-gray-800 py-8 mt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-500 text-sm">
-          <p>waveeProjectBW - Twój personalny przewodnik muzyczny 🎵</p>
+          <p>waveeProjectBW - TwĂłj personalny przewodnik muzyczny đźŽµ</p>
           <p className="mt-2">Powered by Spotify Web API</p>
         </div>
       </footer>
     </div>
   )
 }
+

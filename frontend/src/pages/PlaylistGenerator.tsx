@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { searchTracks, getAvailableGenres, getSimilarTracks, discoverGenre } from '../lib/api'
 import { ListMusic, Search, Shuffle, Music, Loader2, X, Sparkles } from 'lucide-react'
@@ -18,14 +18,14 @@ export default function PlaylistGenerator() {
   const [isGenerating, setIsGenerating] = useState(false)
   const [generatorError, setGeneratorError] = useState<string | null>(null)
 
-  // Search tracks
+  // Szukaj utworow
   const { data: searchResults, isLoading: searching } = useQuery({
     queryKey: ['search', searchQuery],
     queryFn: () => searchTracks(searchQuery).then(res => res.data),
     enabled: searchQuery.length > 2 && mode === 'track',
   })
 
-  // Available genres
+  // Dostepne gatunki
   const { data: genres } = useQuery({
     queryKey: ['genres'],
     queryFn: () => getAvailableGenres().then(res => res.data),
@@ -35,7 +35,7 @@ export default function PlaylistGenerator() {
     setSelectedGenres(prev =>
       prev.includes(genre)
         ? prev.filter(g => g !== genre)
-        : [...prev, genre].slice(0, 3) // Max 3 gatunki
+        : [...prev, genre].slice(0, 3) // Maksymalnie 3 gatunki
     )
   }
 
@@ -47,7 +47,7 @@ export default function PlaylistGenerator() {
 
     try {
       if (mode === 'track' && selectedTrack) {
-        // Generuj na podstawie utworu - generujemy więcej niż potrzeba
+        // Generuj na podstawie utworu - generujemy wiÄ™cej niĹĽ potrzeba
         const response = await getSimilarTracks(selectedTrack.id)
         const tracks = response.data || []
         const shuffled = [...tracks].sort(() => Math.random() - 0.5)
@@ -55,7 +55,7 @@ export default function PlaylistGenerator() {
         setDisplayedPlaylist(shuffled.slice(0, playlistLength))
         setBackupTracks(shuffled.slice(playlistLength))
       } else if (mode === 'genres' && selectedGenres.length > 0) {
-        // Generuj na podstawie gatunków - zbierz utwory z każdego gatunku
+        // Generuj na podstawie gatunkĂłw - zbierz utwory z kaĹĽdego gatunku
         const allTracks: any[] = []
         for (const genre of selectedGenres) {
           const response = await discoverGenre(genre)
@@ -64,7 +64,7 @@ export default function PlaylistGenerator() {
           }
         }
         
-        // Pomieszaj i weź unikalne
+        // Pomieszaj i weĹş unikalne
         const uniqueTracks = allTracks.filter((track, index, self) =>
           index === self.findIndex(t => t.id === track.id)
         )
@@ -72,23 +72,23 @@ export default function PlaylistGenerator() {
         // Losowe przetasowanie
         const shuffled = uniqueTracks.sort(() => Math.random() - 0.5)
         
-        // Podziel na wyświetlane i zapasowe (2x więcej niż potrzeba)
+        // Podziel na wyĹ›wietlane i zapasowe (2x wiÄ™cej niĹĽ potrzeba)
         setDisplayedPlaylist(shuffled.slice(0, playlistLength))
         setBackupTracks(shuffled.slice(playlistLength, playlistLength * 3))
       }
     } catch (error) {
       console.error('Error generating playlist:', error)
-      setGeneratorError((error as any)?.response?.data?.error || 'Nie udało się wygenerować playlisty. Zaloguj się ponownie przez Spotify.')
+      setGeneratorError((error as any)?.response?.data?.error || 'Nie udaĹ‚o siÄ™ wygenerowaÄ‡ playlisty. Zaloguj siÄ™ ponownie przez Spotify.')
     } finally {
       setIsGenerating(false)
     }
   }
 
   const removeTrack = (trackId: string) => {
-    // Usuń utwór z playlisty
+    // UsuĹ„ utwĂłr z playlisty
     setDisplayedPlaylist(prev => prev.filter(t => t.id !== trackId))
     
-    // Jeśli są zapasowe utwory, dodaj jeden
+    // JeĹ›li sÄ… zapasowe utwory, dodaj jeden
     if (backupTracks.length > 0) {
       const [nextTrack, ...remainingBackup] = backupTracks
       setDisplayedPlaylist(prev => [...prev, nextTrack])
@@ -101,7 +101,7 @@ export default function PlaylistGenerator() {
   }
 
   const regenerateMore = async () => {
-    // Dodaj więcej utworów z nowego zapytania
+    // Dodaj wiÄ™cej utworĂłw z nowego zapytania
     setIsGenerating(true)
     try {
       if (mode === 'track' && selectedTrack) {
@@ -109,7 +109,7 @@ export default function PlaylistGenerator() {
         const tracks = response.data || []
         const shuffled = [...tracks].sort(() => Math.random() - 0.5)
         
-        // Dodaj nowe utwory do zapasu (pomijając te które już są)
+        // Dodaj nowe utwory do zapasu (pomijajÄ…c te ktĂłre juĹĽ sÄ…)
         const existingIds = new Set([...displayedPlaylist, ...backupTracks].map(t => t.id))
         const newTracks = shuffled.filter(t => !existingIds.has(t.id))
         setBackupTracks(prev => [...prev, ...newTracks])
@@ -142,16 +142,16 @@ export default function PlaylistGenerator() {
 
   return (
     <div className="space-y-8">
-      {/* Header */}
+      {/* Naglowek */}
       <div>
         <h1 className="text-3xl font-bold text-white mb-2 flex items-center gap-3">
           <ListMusic className="w-8 h-8 text-primary-400" />
           Generator Playlisty
         </h1>
-        <p className="text-gray-400">Wygeneruj playlistę na podstawie utworu lub gatunków muzycznych</p>
+        <p className="text-gray-400">Wygeneruj playlistÄ™ na podstawie utworu lub gatunkĂłw muzycznych</p>
       </div>
 
-      {/* Mode Selection */}
+      {/* Wybor trybu */}
       <div className="flex gap-4">
         <button
           onClick={() => { setMode('genres'); setSelectedTrack(null); setSearchQuery(''); }}
@@ -163,7 +163,7 @@ export default function PlaylistGenerator() {
           )}
         >
           <Music className="w-5 h-5" />
-          Na podstawie gatunków
+          Na podstawie gatunkĂłw
         </button>
         <button
           onClick={() => { setMode('track'); setSelectedGenres([]); }}
@@ -179,7 +179,7 @@ export default function PlaylistGenerator() {
         </button>
       </div>
 
-      {/* Genre Selection */}
+      {/* Wybor gatunkow */}
       {mode === 'genres' && (
         <div className="bg-gray-900 rounded-xl p-6">
           <h2 className="text-lg font-semibold text-white mb-2">Wybierz gatunki (maks. 3)</h2>
@@ -225,12 +225,12 @@ export default function PlaylistGenerator() {
         </div>
       )}
 
-      {/* Track Selection */}
+      {/* Wybor utworu */}
       {mode === 'track' && (
         <div className="bg-gray-900 rounded-xl p-6">
-          <h2 className="text-lg font-semibold text-white mb-4">Wybierz utwór bazowy</h2>
+          <h2 className="text-lg font-semibold text-white mb-4">Wybierz utwĂłr bazowy</h2>
           
-          {/* Selected Track */}
+          {/* Wybrany utwor */}
           {selectedTrack && (
             <div className="flex items-center gap-4 p-4 bg-gray-800 rounded-lg mb-4">
               <img
@@ -253,7 +253,7 @@ export default function PlaylistGenerator() {
             </div>
           )}
 
-          {/* Search */}
+          {/* Wyszukiwanie */}
           {!selectedTrack && (
             <>
               <div className="relative mb-4">
@@ -267,7 +267,7 @@ export default function PlaylistGenerator() {
                 />
               </div>
 
-              {/* Search Results */}
+              {/* Wyniki wyszukiwania */}
               {searching && (
                 <div className="flex justify-center py-4">
                   <Loader2 className="w-6 h-6 text-primary-500 animate-spin" />
@@ -302,11 +302,11 @@ export default function PlaylistGenerator() {
         </div>
       )}
 
-      {/* Generate Button */}
+      {/* Przycisk generowania */}
       <div className="space-y-4">
-        {/* Playlist Length Selector */}
+        {/* Wybor dlugosci playlisty */}
         <div className="bg-gray-900 rounded-xl p-6">
-          <h3 className="text-lg font-semibold text-white mb-4">Długość playlisty</h3>
+          <h3 className="text-lg font-semibold text-white mb-4">DĹ‚ugoĹ›Ä‡ playlisty</h3>
           <div className="flex gap-3">
             {PLAYLIST_LENGTHS.map(length => (
               <button
@@ -338,7 +338,7 @@ export default function PlaylistGenerator() {
           ) : (
             <>
               <Shuffle className="w-5 h-5" />
-              Generuj Playlistę ({playlistLength} utworów)
+              Generuj PlaylistÄ™ ({playlistLength} utworĂłw)
             </>
           )}
         </button>
@@ -350,18 +350,18 @@ export default function PlaylistGenerator() {
         )}
       </div>
 
-      {/* Generated Playlist */}
+      {/* Wygenerowana playlista */}
       {displayedPlaylist.length > 0 && (
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-xl font-semibold text-white">
-                Wygenerowana playlista ({displayedPlaylist.length} utworów)
+                Wygenerowana playlista ({displayedPlaylist.length} utworĂłw)
               </h2>
               <p className="text-sm text-gray-400 mt-1">
                 {backupTracks.length > 0 
-                  ? `${backupTracks.length} utworów zapasowych dostępnych`
-                  : 'Brak zapasowych utworów - usuń niepasujące, a wygenerujemy nowe'}
+                  ? `${backupTracks.length} utworĂłw zapasowych dostÄ™pnych`
+                  : 'Brak zapasowych utworĂłw - usuĹ„ niepasujÄ…ce, a wygenerujemy nowe'}
               </p>
             </div>
             <div className="flex gap-2">
@@ -376,7 +376,7 @@ export default function PlaylistGenerator() {
                   ) : (
                     <Sparkles className="w-4 h-4" />
                   )}
-                  Wygeneruj więcej
+                  Wygeneruj wiÄ™cej
                 </button>
               )}
               <button
@@ -392,16 +392,16 @@ export default function PlaylistGenerator() {
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {displayedPlaylist.map((track: any) => (
               <div key={track.id} className="relative group">
-                {/* Remove Button */}
+                {/* Przycisk usuwania */}
                 <button
                   onClick={() => removeTrack(track.id)}
                   className="absolute top-2 right-2 z-10 p-1.5 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
-                  title="Usuń z playlisty"
+                  title="UsuĹ„ z playlisty"
                 >
                   <X className="w-4 h-4" />
                 </button>
                 
-                {/* Track Card */}
+                {/* Karta utworu */}
                 <Link to={`/track/${track.id}`} className="block">
                   <div className="bg-gray-900 rounded-lg p-3 hover:bg-gray-800 transition group">
                     <div className="relative mb-3">
@@ -427,3 +427,4 @@ export default function PlaylistGenerator() {
     </div>
   )
 }
+

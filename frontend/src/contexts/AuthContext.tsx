@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+﻿import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
 import { getCurrentUser, logout as apiLogout } from '../lib/api'
 import { queryClient } from '../main'
 
@@ -48,7 +48,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       console.error('Logout error:', error)
     } finally {
       setUser(null)
-      // Clear all cached queries to prevent stale data
+      // Wyczysc cache zapytan, zeby nie bylo starych danych
       queryClient.clear()
     }
   }
@@ -73,3 +73,4 @@ export function useAuth() {
   }
   return context
 }
+

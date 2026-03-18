@@ -1,5 +1,5 @@
-"use strict";
-// Mock data for testing without Spotify API
+﻿"use strict";
+// Dane testowe bez Spotify API
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.KEY_NAMES = exports.mockGenres = exports.mockAudioFeatures = exports.mockArtists = exports.mockTracks = void 0;
 exports.getKeyName = getKeyName;
@@ -32,7 +32,7 @@ exports.mockTracks = [
         artists: [{ id: 'a3', name: 'Ed Sheeran' }],
         album: {
             id: 'al3',
-            name: '÷ (Divide)',
+            name: 'Ă· (Divide)',
             images: [{ url: 'https://i.scdn.co/image/ab67616d0000b273ba5db46f4b838ef6027e6f96' }]
         },
         duration_ms: 233000
@@ -249,7 +249,7 @@ exports.mockTracks = [
     {
         id: '23',
         name: 'Crazy in Love',
-        artists: [{ id: 'a22', name: 'Beyoncé' }, { id: 'a23', name: 'Jay-Z' }],
+        artists: [{ id: 'a22', name: 'BeyoncĂ©' }, { id: 'a23', name: 'Jay-Z' }],
         album: {
             id: 'al21',
             name: 'Dangerously in Love',
@@ -297,7 +297,7 @@ exports.mockArtists = [
     { id: 'a19', name: 'Metallica', images: [{ url: 'https://i.scdn.co/image/ab6761610000e5eb69ca98dd3083f1082d740e44' }] },
     { id: 'a20', name: 'a-ha', images: [{ url: 'https://i.scdn.co/image/ab6761610000e5eb8dc8ba7f3c2e7c0e9c3e8b6a' }] },
     { id: 'a21', name: 'Journey', images: [{ url: 'https://i.scdn.co/image/ab6761610000e5eb0e08f5d9e8c9b8d9b8c9b8d9' }] },
-    { id: 'a22', name: 'Beyoncé', images: [{ url: 'https://i.scdn.co/image/ab6761610000e5eb0c68f6c95232e716f0abec97' }] },
+    { id: 'a22', name: 'BeyoncĂ©', images: [{ url: 'https://i.scdn.co/image/ab6761610000e5eb0c68f6c95232e716f0abec97' }] },
     { id: 'a24', name: 'Radiohead', images: [{ url: 'https://i.scdn.co/image/ab6761610000e5eba03696716c9ee605006047fd' }] },
     { id: 'a25', name: 'The Killers', images: [{ url: 'https://i.scdn.co/image/ab6761610000e5eb8c4a8e8b8d8c8d8b8c8d8e8b' }] },
 ];
@@ -333,7 +333,7 @@ exports.mockGenres = [
     'country', 'metal', 'indie', 'folk', 'blues', 'reggae', 'punk', 'soul',
     'disco', 'latin', 'k-pop', 'ambient', 'house'
 ];
-exports.KEY_NAMES = ['C', 'C♯/D♭', 'D', 'D♯/E♭', 'E', 'F', 'F♯/G♭', 'G', 'G♯/A♭', 'A', 'A♯/B♭', 'B'];
+exports.KEY_NAMES = ['C', 'Câ™Ż/Dâ™­', 'D', 'Dâ™Ż/Eâ™­', 'E', 'F', 'Fâ™Ż/Gâ™­', 'G', 'Gâ™Ż/Aâ™­', 'A', 'Aâ™Ż/Bâ™­', 'B'];
 function getKeyName(key, mode) {
     if (key < 0 || key > 11)
         return 'Unknown';
@@ -342,3 +342,4 @@ function getKeyName(key, mode) {
     return `${keyName} ${modeName}`;
 }
 //# sourceMappingURL=mockData.js.map
+

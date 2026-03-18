@@ -1,4 +1,4 @@
-"use strict";
+﻿"use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -23,9 +23,7 @@ exports.createPlaylist = createPlaylist;
 exports.addTracksToPlaylist = addTracksToPlaylist;
 exports.shuffle = shuffle;
 const axios_1 = __importDefault(require("axios"));
-// ---------------------------------------------------------------------------
-// Constants
-// ---------------------------------------------------------------------------
+// Stale
 const API = 'https://api.spotify.com/v1';
 const ACCOUNTS = 'https://accounts.spotify.com';
 const SCOPES = [
@@ -37,8 +35,8 @@ const SCOPES = [
     'playlist-modify-public',
     'playlist-modify-private',
 ].join(' ');
-// Genre list — the /recommendations/available-genre-seeds endpoint was removed
-// by Spotify in late 2024. This curated list covers the main Spotify categories.
+// Lista gatunkow, bo adres /recommendations/available-genre-seeds zostal usuniety.
+// Ta lista zawiera najwazniejsze gatunki Spotify.
 exports.GENRE_LIST = [
     'acoustic', 'afrobeat', 'alt-rock', 'alternative', 'ambient',
     'blues', 'bossanova', 'classical', 'club', 'country',
@@ -52,12 +50,10 @@ exports.GENRE_LIST = [
     'soul', 'synth-pop', 'techno', 'trance', 'trip-hop',
 ];
 exports.KEY_NAMES = [
-    'C', 'C♯/D♭', 'D', 'D♯/E♭', 'E', 'F',
-    'F♯/G♭', 'G', 'G♯/A♭', 'A', 'A♯/B♭', 'B',
+    'C', 'Câ™Ż/Dâ™­', 'D', 'Dâ™Ż/Eâ™­', 'E', 'F',
+    'Fâ™Ż/Gâ™­', 'G', 'Gâ™Ż/Aâ™­', 'A', 'Aâ™Ż/Bâ™­', 'B',
 ];
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
+// Funkcje pomocnicze
 function authHeader(token) {
     return { Authorization: `Bearer ${token}` };
 }
@@ -82,9 +78,7 @@ function getKeyName(key, mode) {
 function isStatus(err, status) {
     return axios_1.default.isAxiosError(err) && err.response?.status === status;
 }
-// ---------------------------------------------------------------------------
-// Auth
-// ---------------------------------------------------------------------------
+// Logowanie
 function getAuthUrl(state) {
     const clientId = process.env.SPOTIFY_CLIENT_ID;
     if (!clientId)
@@ -125,9 +119,7 @@ async function refreshAccessToken(refreshToken) {
     });
     return data;
 }
-// ---------------------------------------------------------------------------
-// User data
-// ---------------------------------------------------------------------------
+// Dane usera
 async function getUserProfile(token) {
     const { data } = await axios_1.default.get(`${API}/me`, {
         headers: authHeader(token),
@@ -148,11 +140,9 @@ async function getTopArtists(token, timeRange = 'medium_term', limit = 20) {
     });
     return (data.items ?? []).slice(0, limit);
 }
-// ---------------------------------------------------------------------------
-// Tracks & Search
-// ---------------------------------------------------------------------------
+// Utwory i wyszukiwanie
 async function searchTracks(token, query, limit = 20) {
-    // Try without limit first (Spotify API may have changed)
+    // Najpierw bez limitu, bo API moglo sie zmienic
     const url = `${API}/search`;
     console.log('[Spotify searchTracks] Trying search for:', query);
     try {
@@ -177,9 +167,8 @@ async function getTrack(token, trackId) {
     return data;
 }
 /**
- * Get audio features for a track.
- * Returns null if the endpoint is restricted (403) or not found (404).
- * Spotify restricted this endpoint in late 2024 for newer apps.
+ * Pobiera cechy audio utworu.
+ * Zwraca null, gdy endpoint jest zablokowany (403) albo brak wyniku (404).
  */
 async function getAudioFeatures(token, trackId) {
     try {
@@ -194,9 +183,7 @@ async function getAudioFeatures(token, trackId) {
         throw err;
     }
 }
-// ---------------------------------------------------------------------------
-// Discovery — replacements for deprecated /recommendations endpoint
-// ---------------------------------------------------------------------------
+// Odkrywanie muzyki zamiast starego /recommendations
 async function getRelatedArtists(token, artistId) {
     const { data } = await axios_1.default.get(`${API}/artists/${artistId}/related-artists`, {
         headers: authHeader(token),
@@ -211,15 +198,15 @@ async function getArtistTopTracks(token, artistId, market = 'US') {
     return data.tracks;
 }
 /**
- * Find tracks similar to a given track.
+ * Szuka utworow podobnych do podanego utworu.
  *
- * Strategy (since /recommendations was deprecated):
- *   1. Look up the track's primary artist.
- *   2. Get related artists via /artists/{id}/related-artists.
- *   3. Fetch top tracks from a sample of those related artists.
- *   4. De-duplicate, exclude the seed track, shuffle and trim.
+ * Jak to dziala:
+ *   1. Bierze glownego artyste utworu.
+ *   2. Pobiera podobnych artystow.
+ *   3. Pobiera ich top utwory.
+ *   4. Usuwa duplikaty, usuwa seed track i miesza wyniki.
  *
- * Falls back to a name-based search if related artists fail.
+ * Gdy to sie nie uda, robi zwykle wyszukiwanie po nazwie artysty.
  */
 async function findSimilarTracks(token, trackId, limit = 20) {
     const track = await getTrack(token, trackId);
@@ -236,10 +223,10 @@ async function findSimilarTracks(token, trackId, limit = 20) {
     if (relatedArtists.length === 0) {
         return searchTracks(token, track.artists[0].name, limit);
     }
-    // Pick up to 4 random related artists and get their top tracks
+    // Wez do 4 losowych podobnych artystow i ich top utwory
     const picked = shuffle(relatedArtists).slice(0, 4);
     const trackLists = await Promise.all(picked.map((a) => getArtistTopTracks(token, a.id).catch(() => [])));
-    // Flatten, deduplicate, exclude seed track, shuffle
+    // Polacz listy, usun duplikaty i utwor startowy, potem wymieszaj
     const seen = new Set([trackId]);
     const pool = [];
     for (const list of trackLists) {
@@ -253,16 +240,14 @@ async function findSimilarTracks(token, trackId, limit = 20) {
     return shuffle(pool).slice(0, limit);
 }
 /**
- * Discover tracks for a given genre using search.
- * Replaces the deprecated /recommendations?seed_genres= endpoint.
+ * Odkrywa utwory dla gatunku przez wyszukiwarke.
+ * Zastepuje stare /recommendations?seed_genres=.
  */
 async function discoverByGenre(token, genre, limit = 20) {
     const results = await searchTracks(token, `genre:${genre}`, 50);
     return shuffle(results).slice(0, limit);
 }
-// ---------------------------------------------------------------------------
-// Playlists
-// ---------------------------------------------------------------------------
+// Playlisty
 async function createPlaylist(token, userId, name, description, isPublic = true) {
     const { data } = await axios_1.default.post(`${API}/users/${userId}/playlists`, { name, description, public: isPublic }, { headers: authHeader(token) });
     return data;
@@ -271,9 +256,7 @@ async function addTracksToPlaylist(token, playlistId, trackUris) {
     const { data } = await axios_1.default.post(`${API}/playlists/${playlistId}/tracks`, { uris: trackUris }, { headers: authHeader(token) });
     return data;
 }
-// ---------------------------------------------------------------------------
-// Utility
-// ---------------------------------------------------------------------------
+// Narzedzia
 function shuffle(arr) {
     const a = [...arr];
     for (let i = a.length - 1; i > 0; i--) {
