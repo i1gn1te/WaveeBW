@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useAuth } from '../contexts/AuthContext'
 import { getUserProfile, updateProfile, getAvailableGenres, getUserStats } from '../lib/api'
@@ -104,11 +104,11 @@ export default function Profile() {
                   type="text"
                   value={editDisplayName}
                   onChange={(e) => setEditDisplayName(e.target.value)}
-                  placeholder="Nazwa wyĹ›wietlana"
+                  placeholder="Nazwa wyświetlana"
                   className="text-2xl font-bold text-white bg-gray-800 rounded-lg px-3 py-1 w-full mb-2"
                 />
               ) : (
-                <h1 className="text-2xl font-bold text-white">{user?.displayName || 'UĹĽytkownik'}</h1>
+                <h1 className="text-2xl font-bold text-white">{user?.displayName || 'Użytkownik'}</h1>
               )}
               <p className="text-gray-400">{user?.email}</p>
             </div>
@@ -154,13 +154,13 @@ export default function Profile() {
             <textarea
               value={editBio}
               onChange={(e) => setEditBio(e.target.value)}
-              placeholder="Napisz coĹ› o sobie i swoich muzycznych gustach..."
+              placeholder="Napisz coś o sobie i swoich muzycznych gustach..."
               rows={3}
               className="w-full bg-gray-800 text-white rounded-lg px-4 py-3 resize-none focus:ring-2 focus:ring-primary-500 focus:outline-none"
             />
           ) : (
             <p className="text-gray-300">
-              {profile?.bio || <span className="text-gray-500 italic">Brak opisu - kliknij "Edytuj profil" aby dodaÄ‡</span>}
+              {profile?.bio || <span className="text-gray-500 italic">Brak opisu - kliknij "Edytuj profil" aby dodać</span>}
             </p>
           )}
         </div>
@@ -193,7 +193,7 @@ export default function Profile() {
                 {hasGenres ? 'Edytuj ulubione gatunki' : 'Wybierz ulubione gatunki'}
               </h2>
               <p className="text-sm text-gray-400">
-                Wybierz do 5 gatunkĂłw, aby otrzymywaÄ‡ lepsze rekomendacje
+                Wybierz do 5 gatunków, aby otrzymywać lepsze rekomendacje
               </p>
             </div>
             {!isEditing && !hasGenres && editGenres.length > 0 && (
@@ -207,7 +207,7 @@ export default function Profile() {
                 ) : (
                   <Check className="w-4 h-4" />
                 )}
-                Zapisz wybĂłr
+                Zapisz wybór
               </button>
             )}
           </div>
@@ -226,7 +226,7 @@ export default function Profile() {
                     onClick={() => toggleGenre(genre)}
                     className="hover:text-white"
                   >
-                    Ă—
+                    ×
                   </button>
                 </span>
               ))}
@@ -270,7 +270,7 @@ export default function Profile() {
                 {stats.averageRating?.toFixed(1) || '-'}
               </p>
             </div>
-            <p className="text-sm text-gray-400">Ĺšrednia ocena</p>
+            <p className="text-sm text-gray-400">Średnia ocena</p>
           </div>
           <div className="bg-gray-900 rounded-xl p-4 text-center">
             <p className="text-3xl font-bold text-white">{profile?._count?.playlists || 0}</p>
@@ -286,14 +286,14 @@ export default function Profile() {
       {/* Rozklad ocen */}
       {stats?.ratingDistribution && stats.totalReviews > 0 && (
         <div className="bg-gray-900 rounded-xl p-6">
-          <h2 className="text-lg font-semibold text-white mb-4">RozkĹ‚ad ocen</h2>
+          <h2 className="text-lg font-semibold text-white mb-4">Rozkład ocen</h2>
           <div className="space-y-2">
             {['5', '4', '3', '2', '1'].map(rating => {
               const count = stats.ratingDistribution[rating] || 0
               const percentage = stats.totalReviews > 0 ? (count / stats.totalReviews) * 100 : 0
               return (
                 <div key={rating} className="flex items-center gap-3">
-                  <span className="text-gray-400 w-8">{rating}â…</span>
+                  <span className="text-gray-400 w-8">{rating}★</span>
                   <div className="flex-1 h-4 bg-gray-800 rounded-full overflow-hidden">
                     <div
                       className="h-full bg-yellow-400 rounded-full"

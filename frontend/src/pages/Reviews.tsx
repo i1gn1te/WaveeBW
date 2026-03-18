@@ -1,4 +1,4 @@
-﻿import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
 import { getMyReviews, deleteReview } from '../lib/api'
 import StarRating from '../components/StarRating'
@@ -35,19 +35,19 @@ export default function Reviews() {
         <h1 className="text-3xl font-bold text-white mb-2">Twoje recenzje</h1>
         <p className="text-gray-400">
           {reviews.length > 0
-            ? `Masz ${reviews.length} ${reviews.length === 1 ? 'recenzjÄ™' : reviews.length < 5 ? 'recenzje' : 'recenzji'}`
-            : 'Nie masz jeszcze ĹĽadnych recenzji'}
+            ? `Masz ${reviews.length} ${reviews.length === 1 ? 'recenzję' : reviews.length < 5 ? 'recenzje' : 'recenzji'}`
+            : 'Nie masz jeszcze żadnych recenzji'}
         </p>
       </div>
 
       {reviews.length === 0 ? (
         <div className="text-center py-12 bg-gray-900 rounded-xl">
-          <p className="text-gray-400 mb-4">Zacznij recenzowaÄ‡ muzykÄ™!</p>
+          <p className="text-gray-400 mb-4">Zacznij recenzować muzykę!</p>
           <Link
             to="/search"
             className="inline-block px-6 py-3 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition"
           >
-            Szukaj utworĂłw
+            Szukaj utworów
           </Link>
         </div>
       ) : (
@@ -108,7 +108,7 @@ export default function Reviews() {
                     )}
                     {review.danceability && (
                       <span className="px-2 py-1 bg-gray-800 text-gray-400 text-xs rounded">
-                        TanecznoĹ›Ä‡: {Math.round(review.danceability * 100)}%
+                        Taneczność: {Math.round(review.danceability * 100)}%
                       </span>
                     )}
                   </div>
@@ -121,7 +121,7 @@ export default function Reviews() {
                   onClick={() => deleteMutation.mutate(review.id)}
                   disabled={deleteMutation.isPending}
                   className="p-2 text-gray-400 hover:text-red-500 transition"
-                  title="UsuĹ„ recenzjÄ™"
+                  title="Usuń recenzję"
                 >
                   <Trash2 className="w-5 h-5" />
                 </button>

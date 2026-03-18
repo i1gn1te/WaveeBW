@@ -1,4 +1,4 @@
-﻿import { Outlet, Link, useNavigate } from 'react-router-dom'
+import { Outlet, Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { Music, Search, Star, ListMusic, User, LogOut, Menu, X, Users } from 'lucide-react'
 import { useState } from 'react'
@@ -48,7 +48,7 @@ export default function Layout() {
                 </Link>
                 <Link to="/community" className="text-gray-300 hover:text-white transition flex items-center gap-2">
                   <Users className="w-4 h-4" />
-                  SpoĹ‚ecznoĹ›Ä‡
+                  Społeczność
                 </Link>
               </div>
             )}
@@ -109,7 +109,7 @@ export default function Layout() {
                 Generator
               </Link>
               <Link to="/community" className="block text-gray-300 hover:text-white" onClick={() => setMobileMenuOpen(false)}>
-                SpoĹ‚ecznoĹ›Ä‡
+                Społeczność
               </Link>
               <Link to="/profile" className="block text-gray-300 hover:text-white" onClick={() => setMobileMenuOpen(false)}>
                 Profil
@@ -130,7 +130,7 @@ export default function Layout() {
       {/* Stopka */}
       <footer className="border-t border-gray-800 py-8 mt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-500 text-sm">
-          <p>waveeProjectBW - TwĂłj personalny przewodnik muzyczny đźŽµ</p>
+          <p>waveeProjectBW - Twój personalny przewodnik muzyczny 🎵</p>
           <p className="mt-2">Powered by Spotify Web API</p>
         </div>
       </footer>

@@ -1,4 +1,4 @@
-﻿import { useState } from 'react'
+import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
@@ -7,8 +7,8 @@ import { Star, TrendingUp, Music, Clock, Hash } from 'lucide-react'
 
 const TIME_RANGES = [
   { value: 'short_term', label: 'Ostatnie 4 tygodnie' },
-  { value: 'medium_term', label: 'Ostatnie 6 miesiÄ™cy' },
-  { value: 'long_term', label: 'Wszystkich czasĂłw' },
+  { value: 'medium_term', label: 'Ostatnie 6 miesięcy' },
+  { value: 'long_term', label: 'Wszystkich czasów' },
 ] as const;
 
 export default function Dashboard() {
@@ -41,15 +41,15 @@ export default function Dashboard() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-white">
-            CzeĹ›Ä‡, {user?.displayName || 'UĹĽytkowniku'}! đź‘‹
+            Cześć, {user?.displayName || 'Użytkowniku'}! 👋
           </h1>
-          <p className="text-gray-400 mt-1">Oto TwĂłj muzyczny przeglÄ…d</p>
+          <p className="text-gray-400 mt-1">Oto Twój muzyczny przegląd</p>
         </div>
         <Link
           to="/search"
           className="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition"
         >
-          Szukaj utworĂłw
+          Szukaj utworów
         </Link>
       </div>
 
@@ -73,7 +73,7 @@ export default function Dashboard() {
             </div>
             <div>
               <p className="text-2xl font-bold text-white">{stats?.averageRating?.toFixed(1) || '-'}</p>
-              <p className="text-sm text-gray-400">Ĺšr. ocena</p>
+              <p className="text-sm text-gray-400">Śr. ocena</p>
             </div>
           </div>
         </div>
@@ -84,7 +84,7 @@ export default function Dashboard() {
             </div>
             <div>
               <p className="text-2xl font-bold text-white">{topTracks?.length || 0}</p>
-              <p className="text-sm text-gray-400">Top utworĂłw</p>
+              <p className="text-sm text-gray-400">Top utworów</p>
             </div>
           </div>
         </div>
@@ -95,7 +95,7 @@ export default function Dashboard() {
             </div>
             <div>
               <p className="text-2xl font-bold text-white">{topArtists?.length || 0}</p>
-              <p className="text-sm text-gray-400">ArtystĂłw</p>
+              <p className="text-sm text-gray-400">Artystów</p>
             </div>
           </div>
         </div>
@@ -185,7 +185,7 @@ export default function Dashboard() {
           <div className="bg-gray-900 rounded-lg p-8 text-center">
             <Music className="w-12 h-12 text-gray-700 mx-auto mb-3" />
             <p className="text-gray-400">Brak danych o top utworach</p>
-            <p className="text-sm text-gray-500 mt-1">SĹ‚uchaj wiÄ™cej na Spotify!</p>
+            <p className="text-sm text-gray-500 mt-1">Słuchaj więcej na Spotify!</p>
           </div>
         )}
       </section>
@@ -193,7 +193,7 @@ export default function Dashboard() {
       {/* Top artysci */}
       {topArtists && topArtists.length > 0 && (
         <section>
-          <h2 className="text-xl font-semibold text-white mb-1">Twoi ulubieni artyĹ›ci</h2>
+          <h2 className="text-xl font-semibold text-white mb-1">Twoi ulubieni artyści</h2>
           <p className="text-sm text-gray-500 mb-4">
             {TIME_RANGES.find(t => t.value === timeRange)?.label}
           </p>
@@ -225,7 +225,7 @@ export default function Dashboard() {
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-semibold text-white">Twoje ostatnie recenzje</h2>
             <Link to="/reviews" className="text-primary-400 text-sm hover:text-primary-300">
-              Zobacz wszystkie â†’
+              Zobacz wszystkie →
             </Link>
           </div>
           <div className="space-y-3">

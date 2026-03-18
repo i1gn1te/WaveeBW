@@ -1,4 +1,4 @@
-﻿import { useState } from 'react'
+import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { searchTracks } from '../lib/api'
 import TrackCard from '../components/TrackCard'
@@ -22,8 +22,8 @@ export default function Search() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-white mb-2">Szukaj utworĂłw</h1>
-        <p className="text-gray-400">ZnajdĹş utwory, aby je oceniÄ‡ lub dodaÄ‡ do playlisty</p>
+        <h1 className="text-3xl font-bold text-white mb-2">Szukaj utworów</h1>
+        <p className="text-gray-400">Znajdź utwory, aby je ocenić lub dodać do playlisty</p>
       </div>
 
       {/* Formularz wyszukiwania */}
@@ -33,7 +33,7 @@ export default function Search() {
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Wpisz nazwÄ™ utworu, artysty lub albumu..."
+          placeholder="Wpisz nazwę utworu, artysty lub albumu..."
           className="w-full pl-12 pr-4 py-4 bg-gray-900 border border-gray-800 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-primary-500 transition"
         />
         <button
@@ -54,7 +54,7 @@ export default function Search() {
 
       {tracks && tracks.length > 0 && (
         <div>
-          <p className="text-gray-400 mb-4">Znaleziono {tracks.length} wynikĂłw</p>
+          <p className="text-gray-400 mb-4">Znaleziono {tracks.length} wyników</p>
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {tracks.map((track: any) => (
               <TrackCard key={track.id} track={track} />
@@ -65,16 +65,16 @@ export default function Search() {
 
       {searchTerm && tracks && tracks.length === 0 && (
         <div className="text-center py-12">
-          <p className="text-gray-400">Nie znaleziono wynikĂłw dla "{searchTerm}"</p>
-          <p className="text-sm text-gray-500 mt-2">SprĂłbuj wyszukaÄ‡ coĹ› innego</p>
+          <p className="text-gray-400">Nie znaleziono wyników dla "{searchTerm}"</p>
+          <p className="text-sm text-gray-500 mt-2">Spróbuj wyszukać coś innego</p>
         </div>
       )}
 
       {searchTerm && isError && (
         <div className="text-center py-12">
-          <p className="text-red-400">Nie udaĹ‚o siÄ™ pobraÄ‡ wynikĂłw wyszukiwania.</p>
+          <p className="text-red-400">Nie udało się pobrać wyników wyszukiwania.</p>
           <p className="text-sm text-gray-500 mt-2">
-            {(error as any)?.response?.data?.error || 'OdĹ›wieĹĽ stronÄ™ i zaloguj siÄ™ ponownie przez Spotify.'}
+            {(error as any)?.response?.data?.error || 'Odśwież stronę i zaloguj się ponownie przez Spotify.'}
           </p>
         </div>
       )}
@@ -82,7 +82,7 @@ export default function Search() {
       {!searchTerm && (
         <div className="text-center py-12">
           <SearchIcon className="w-12 h-12 text-gray-700 mx-auto mb-4" />
-          <p className="text-gray-400">Zacznij wpisywaÄ‡, aby wyszukaÄ‡ utwory</p>
+          <p className="text-gray-400">Zacznij wpisywać, aby wyszukać utwory</p>
         </div>
       )}
     </div>

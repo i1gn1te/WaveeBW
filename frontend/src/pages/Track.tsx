@@ -1,4 +1,4 @@
-﻿import { useState } from 'react'
+import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { getTrackDetails, getTrackReviews, createReview, getSimilarTracks } from '../lib/api'
@@ -88,7 +88,7 @@ export default function Track() {
 
         {/* Informacje o utworze */}
         <div className="flex-1">
-          <p className="text-sm text-primary-400 font-medium mb-2">UTWĂ“R</p>
+          <p className="text-sm text-primary-400 font-medium mb-2">UTWÓR</p>
           <h1 className="text-4xl font-bold text-white mb-4">{track.name}</h1>
           
           <div className="flex items-center gap-4 text-gray-400 mb-6">
@@ -109,7 +109,7 @@ export default function Track() {
           {/* Srednia ocena */}
           {reviewsData && reviewsData.averageRating > 0 && (
             <div className="bg-gray-900 rounded-lg px-4 py-3 inline-flex items-center gap-3">
-              <span className="text-gray-400">Ĺšrednia ocena:</span>
+              <span className="text-gray-400">Średnia ocena:</span>
               <StarRating rating={reviewsData.averageRating} readonly />
               <span className="text-gray-500 text-sm">({reviewsData.pagination.total} recenzji)</span>
             </div>
@@ -123,7 +123,7 @@ export default function Track() {
 
         {/* Formularz recenzji */}
         <div className="bg-gray-900 rounded-xl p-6">
-          <h3 className="text-lg font-semibold text-white mb-4">Napisz recenzjÄ™</h3>
+          <h3 className="text-lg font-semibold text-white mb-4">Napisz recenzję</h3>
           
           <div className="space-y-4">
             <div>
@@ -136,7 +136,7 @@ export default function Track() {
               <textarea
                 value={reviewContent}
                 onChange={(e) => setReviewContent(e.target.value)}
-                placeholder="Co sÄ…dzisz o tym utworze?"
+                placeholder="Co sądzisz o tym utworze?"
                 rows={4}
                 className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-primary-500 transition resize-none"
               />
@@ -148,11 +148,11 @@ export default function Track() {
               className="w-full py-3 bg-primary-500 text-white rounded-lg font-medium hover:bg-primary-600 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {reviewMutation.isPending && <Loader2 className="w-4 h-4 animate-spin" />}
-              {reviewMutation.isPending ? 'Zapisywanie...' : 'Opublikuj recenzjÄ™'}
+              {reviewMutation.isPending ? 'Zapisywanie...' : 'Opublikuj recenzję'}
             </button>
 
             {reviewMutation.isSuccess && (
-              <p className="text-green-500 text-sm text-center">Recenzja zostaĹ‚a zapisana!</p>
+              <p className="text-green-500 text-sm text-center">Recenzja została zapisana!</p>
             )}
           </div>
         </div>
