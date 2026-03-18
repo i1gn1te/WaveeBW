@@ -50,8 +50,8 @@ exports.GENRE_LIST = [
     'soul', 'synth-pop', 'techno', 'trance', 'trip-hop',
 ];
 exports.KEY_NAMES = [
-    'C', 'Câ™Ż/Dâ™­', 'D', 'Dâ™Ż/Eâ™­', 'E', 'F',
-    'Fâ™Ż/Gâ™­', 'G', 'Gâ™Ż/Aâ™­', 'A', 'Aâ™Ż/Bâ™­', 'B',
+    'C', 'C#/Db', 'D', 'D#/Eb', 'E', 'F',
+    'F#/Gb', 'G', 'G#/Ab', 'A', 'A#/Bb', 'B',
 ];
 // Funkcje pomocnicze
 function authHeader(token) {

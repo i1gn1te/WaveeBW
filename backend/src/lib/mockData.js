@@ -333,7 +333,7 @@ exports.mockGenres = [
     'country', 'metal', 'indie', 'folk', 'blues', 'reggae', 'punk', 'soul',
     'disco', 'latin', 'k-pop', 'ambient', 'house'
 ];
-exports.KEY_NAMES = ['C', 'Câ™Ż/Dâ™­', 'D', 'Dâ™Ż/Eâ™­', 'E', 'F', 'Fâ™Ż/Gâ™­', 'G', 'Gâ™Ż/Aâ™­', 'A', 'Aâ™Ż/Bâ™­', 'B'];
+exports.KEY_NAMES = ['C', 'C#/Db', 'D', 'D#/Eb', 'E', 'F', 'F#/Gb', 'G', 'G#/Ab', 'A', 'A#/Bb', 'B'];
 function getKeyName(key, mode) {
     if (key < 0 || key > 11)
         return 'Unknown';
